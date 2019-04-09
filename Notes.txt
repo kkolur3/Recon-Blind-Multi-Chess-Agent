@@ -1,0 +1,14 @@
+choose_sense:
+	use model to select square based on state
+	
+choose_move:
+	reward function = material differential + number of your possible moves that access e4, e5, d4, d5 squares including pawn captures
+		may need to pass possible_moves to model to compute reward
+	use model to decide
+	
+	
+model properties:
+	reward function = material differential + number of your possible moves that access e4, e5, d4, d5 squares including pawn captures
+	material rules: {pawn = 1, knight = 3, bishop = 3, rook = 5, queen = 9, king = 1000, None = 1}. Add for each piece you took, subtract
+	for each piece lost.
+	Material differential = pieces captured - pieces lost
