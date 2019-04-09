@@ -23,6 +23,7 @@ class Random(Player):
         :param color: chess.BLACK or chess.WHITE -- your color assignment for the game
         :param board: chess.Board -- initial board state
         """
+        print(board)
         pass
         
     def handle_opponent_move_result(self, captured_piece, captured_square):

@@ -101,8 +101,8 @@ def play_turn(game, player, turn, move_number, output, output_true):
     # play move action
     move = player.choose_move(possible_moves, game.get_seconds_left())
     requested_move, taken_move, captured_square, reason = game.handle_move(move)
-    player.handle_move_result(requested_move, taken_move, captured_square is not None,
-                              captured_square, reason)
+    player.handle_move_result(requested_move, taken_move, reason, captured_square is not None,
+                              captured_square)
 
     output.write("##################################--Move requested: {} -- Move taken: {}\n".format(requested_move, taken_move))
     output_true.write("##################################--Move requested: {} -- Move taken: {}\n\n".format(requested_move, taken_move))
@@ -197,7 +197,6 @@ if __name__ == '__main__':
     # parser.add_argument('--color', default='random', choices=['white', 'black', 'random'],
     #                    help='The color you want to play as.')
     args = parser.parse_args()
-
     name_one, constructor_one = load_player(args.first_path)
     player_one = constructor_one()
     name_two, constructor_two = load_player(args.second_path)
