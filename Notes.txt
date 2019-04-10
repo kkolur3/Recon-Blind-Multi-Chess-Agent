@@ -1,3 +1,14 @@
+Good Sources to read:
+https://arxiv.org/pdf/1811.03119.pdf - COMPLEXITY OF RBMC 
+
+https://www.spiedigitallibrary.org/conference-proceedings-of-spie/9842/984209/Reconnaissance-blind-multi-chess--an-experimentation-platform-for-ISR/10.1117/12.2228127.full?SSO=1 - COMPLEXITY OF RBMC
+
+https://medium.freecodecamp.org/simple-chess-ai-step-by-step-1d55a9266977 - INCORPORATE PIECE POSITION INTO REWARD FUNCTION
+
+https://arxiv.org/pdf/1704.07978v6.pdf. - ADRQN PAPER
+
+https://towardsdatascience.com/predicting-professional-players-chess-moves-with-deep-learning-9de6e305109e - state representation
+
 choose_sense:
 	use model to select square based on state
 	
@@ -8,7 +19,14 @@ choose_move:
 	
 	
 model properties:
-	reward function = material differential + number of your possible moves that access e4, e5, d4, d5 squares including pawn captures
-	material rules: {pawn = 1, knight = 3, bishop = 3, rook = 5, queen = 9, king = 1000, None = 1}. Add for each piece you took, subtract
-	for each piece lost.
+	reward function = material differential + number of your possible moves that 		access e4, e5, d4, d5 squares including pawn captures
+
+	material rules: {pawn = 1, knight = 3, bishop = 3, rook = 5, queen = 9, king = 		1000, None = 1, DRAW = 0?}. Add for each piece you took, subtract
+	for each piece lost.Maybe subtract a point for each move taken to penalize longer 	games? Account for piece position in calculating reward as well
+
 	Material differential = pieces captured - pieces lost
+
+State Representation:
+
+8x8x12? Negative for white, positive for black?
+- 
