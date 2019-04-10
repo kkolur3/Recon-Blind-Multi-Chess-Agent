@@ -1,14 +1,43 @@
+handle_opponent_move_result:
+	update board
+	if capture:
+		update material differential
+		recompute reward
+
 choose_sense:
 	use model to select square based on state
 	
 choose_move:
-	reward function = material differential + number of your possible moves that access e4, e5, d4, d5 squares including pawn captures
-		may need to pass possible_moves to model to compute reward
 	use model to decide
 	
+handle_move_result:
+	update board
+	if capture:
+		update material differential (+ value if observed piece was captured, + 1 if unobserved piece was captured)
+		
+handle_game_end:
+	if winning color is agent color:
+		material differential += 1000
+	else if winning color is opponent color:
+		material differential -= 1000
+	else no change if draw
 	
 model properties:
-	reward function = material differential + number of your possible moves that access e4, e5, d4, d5 squares including pawn captures
+	reward function = material differential + number of your possible moves that access e4, e5, d4, d5 squares including pawn captures - 1
 	material rules: {pawn = 1, knight = 3, bishop = 3, rook = 5, queen = 9, king = 1000, None = 1}. Add for each piece you took, subtract
 	for each piece lost.
 	Material differential = pieces captured - pieces lost
+	
+state encoding:
+	8x8 array for the entire board {
+		each element is a size-12 array denoting probabilities that a piece is occupying that square
+		[opppawn, opprook, oppknight, oppbishop, oppqueen, oppking, ourpawn, ourrook, ourknight, ourbishop, ourqueen, ourking]
+		first six indices domain = [0,1] continuous.  last six indices domain = {0,1} discrete
+	}
+	material differential
+	potential moves
+	static data: {
+		reward map for each of our pieces and positions
+	}
+	
+	reward = material differential + rewardmap[piece at start][end] - rewardmap[piece at start][start] - 1
