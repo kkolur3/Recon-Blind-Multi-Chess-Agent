@@ -53,3 +53,20 @@ state encoding:
 	}
 	
 	reward = material differential + rewardmap[piece at start][end] - rewardmap[piece at start][start] - 1
+
+
+
+########TODO:###########
+
+ANUJ
+
+Model Reward Function
+State Representation
+Handle Neural Network Output
+Flesh out remaining methods in agent.py, 
+
+KESHAV
+Run games and Parse .txt files and create state representations, actions, and rewards to feed into Deep Q Learning NN
+construct neural networks
+setup google colab to train online
+
