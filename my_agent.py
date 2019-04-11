@@ -294,13 +294,14 @@ class StateEncoding():
             [False, 0, 0, 0, 1, 0, 0], [False, 0, 1, 0, 0, 0, 0], [False, 0, 0, 1, 0, 0, 0], [False, 0, 0, 0, 0, 1, 0],
             [False, 0, 0, 0, 0, 0, 1], [False, 0, 0, 1, 0, 0, 0], [False, 0, 1, 0, 0, 0, 0], [False, 0, 0, 0, 1, 0, 0],
         ]
-
-    def set_probability(self, color, square, piece, value):
-        self.dists[square][piece] = value
-        self.dists[square][0] = color
-
-    def set_possible_moves(self, possible_moves):
-        self.possible_moves = possible_moves
+        self.piece_values = {
+            chess.PAWN: 1,
+            chess.KNIGHT: 3,
+            chess.BISHOP: 3,
+            chess.ROOK: 5,
+            chess.QUEEN: 9,
+            chess.KING: 1000
+        }
 
     def believe_square_is_empty(self, square):
         self.dists[square].clear()
@@ -362,6 +363,8 @@ class StateEncoding():
     def update_state_after_opponent_move(self, capture, capture_square):
         # probability drift to uniform as the game progresses and the picture becomes cloudier
         if capture:
+            piece = self.board.piece_at(capture_square).piece_type
+            self.material_differential -= self.piece_values[piece]
             self.dists[capture_square] = [not self.color, 0.167, 0.167, 0.167, 0.167, 0.167, 0.167]
 
     def update_state_after_sense(self, observations):
