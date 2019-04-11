@@ -30,6 +30,7 @@ class MyAgent(Player):
         """
         # TODO: implement this method
         self.board = board
+        self.state = StateEncoding(color)
         self.color = color
         if color == chess.WHITE:
             self.board.set_fen("8/8/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
@@ -48,7 +49,8 @@ class MyAgent(Player):
         assert isinstance(self.board, chess.Board)
         if captured_piece:
              self.board.remove_piece_at(captured_square)
-        self.board.turn = (self.color == chess.WHITE)
+        self.board.turn = self.color
+        self.state.update_state_after_opponent_move(captured_piece, captured_square)
         pass
 
     def choose_sense(self, possible_sense, possible_moves, seconds_left):
@@ -92,6 +94,7 @@ class MyAgent(Player):
         assert isinstance(self.board, chess.Board)
         for sense in sense_result:
             self.board.set_piece_at(sense[0], sense[1])
+        self.state.update_state_after_sense(sense_result)
 
 
     def choose_move(self, possible_moves, seconds_left):
@@ -131,7 +134,9 @@ class MyAgent(Player):
             self.board.remove_piece_at(captured_square)
         self.board.push(taken_move if taken_move is not None else chess.Move.null())
         print(self.board)
-        print(self.board.board_fen())
+        print("==================================================================================")
+        self.state.update_state_with_move(taken_move)
+
         pass
         
     def handle_game_end(self, winner_color, win_reason):  # possible GameHistory object...
@@ -285,7 +290,7 @@ class StateEncoding():
             [],[],[],[],[],[],[],[],
             [],[],[],[],[],[],[],[],
             [False, 1, 0, 0, 0, 0, 0], [False, 1, 0, 0, 0, 0, 0], [False, 1, 0, 0, 0, 0, 0], [False, 1, 0, 0, 0, 0, 0],
-            [False, 1, 0, 0, 0, 0, 0], [False, 1, 0, 0, 0, 0, 0], [False, 1, 0, 0, 0, 0, 0], [False, 1, 0, 0, 0, 0, 0]
+            [False, 1, 0, 0, 0, 0, 0], [False, 1, 0, 0, 0, 0, 0], [False, 1, 0, 0, 0, 0, 0], [False, 1, 0, 0, 0, 0, 0],
             [False, 0, 0, 0, 1, 0, 0], [False, 0, 1, 0, 0, 0, 0], [False, 0, 0, 1, 0, 0, 0], [False, 0, 0, 0, 0, 1, 0],
             [False, 0, 0, 0, 0, 0, 1], [False, 0, 0, 1, 0, 0, 0], [False, 0, 1, 0, 0, 0, 0], [False, 0, 0, 0, 1, 0, 0],
         ]
@@ -301,7 +306,8 @@ class StateEncoding():
         self.dists[square].clear()
 
     def update_board(self):
-        assert isinstance(self.board, chess.Board)
+        print(self.board)
+        self.board.clear()
         for square_index in range(64):
             square = self.dists[square_index]
             arr_len = square.__len__()
@@ -309,18 +315,75 @@ class StateEncoding():
             piece = None
             if arr_len > 0:
                 color = square[0]
-                piece = 1
+                piece = 0
+                duplicates = False
                 max_prob = -1
                 for x in range(1, arr_len):
                     if max_prob < square[x]:
                         max_prob = square[x]
                         piece = x
-            if piece is None:
+                        duplicates = False
+                    elif max_prob == square[x]:
+                      duplicates = True
+            if piece is None or duplicates:
                 self.board.remove_piece_at(square_index)
             else:
                 self.board.set_piece_at(square_index, chess.Piece(piece, color))
+        print("============  Before probability update  =============================================")
+        print(self.board)
+        print("============   After probability update  =============================================")
 
     def compute_reward(self):
         reward = self.material_differential
+        for x in range(64):
+            piece = self.board.piece_at(x)
+            if piece is not None and piece.color == self.color:
+                reward += self.reward_map[piece.piece_type][x]
+        return reward - 1
+
+    def compute_move_reward_change(self, move):
+        assert isinstance(move, chess.Move)
+        piece_moved = self.board.piece_at(move.from_square).piece_type
+        if not self.board.is_legal(move):
+            return -500
+        else:
+            return \
+                self.reward_map[piece_moved][move.to_square] - self.reward_map[piece_moved][move.from_square]
+
+    def update_state_with_move(self, move):
+        if move is not None:
+            piece = self.board.piece_at(move.from_square).piece_type
+            self.dists[move.from_square] = []
+            move_vector = [self.color, 0, 0, 0, 0, 0, 0]
+            move_vector[piece] = 1
+            self.dists[move.to_square] = move_vector
+        self.update_board()
+
+    def update_state_after_opponent_move(self, capture, capture_square):
+        # probability drift?
+        if capture:
+            self.dists[capture_square] = [not self.color, 0.167, 0.167, 0.167, 0.167, 0.167, 0.167]
+
+    def update_state_after_sense(self, observations):
+        for observation in observations:
+            square = observation[0]
+            piece = observation[1]
+            observation_vector = [not self.color, 0, 0, 0, 0, 0, 0]
+            if piece is not None:
+                observation_vector[0] = piece.color
+                observation_vector[piece.piece_type] = 1
+            else:
+                observation_vector = []
+            self.dists[square] = observation_vector
+        self.update_board()
+
+if __name__ == '__main__':
+    state = StateEncoding(chess.WHITE)
+    print(state.compute_reward())
+    move = chess.Move.from_uci("e2e4")
+    print(state.compute_move_reward_change(move))
+    state.update_state_with_move(move)
+    print(state.compute_reward())
+
 
 
