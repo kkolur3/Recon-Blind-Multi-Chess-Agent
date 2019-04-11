@@ -360,7 +360,7 @@ class StateEncoding():
         self.update_board()
 
     def update_state_after_opponent_move(self, capture, capture_square):
-        # probability drift?
+        # probability drift to uniform as the game progresses and the picture becomes cloudier
         if capture:
             self.dists[capture_square] = [not self.color, 0.167, 0.167, 0.167, 0.167, 0.167, 0.167]
 
