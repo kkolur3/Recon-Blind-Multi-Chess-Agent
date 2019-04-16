@@ -12,6 +12,7 @@ Source:         Adapted from recon-chess (https://pypi.org/project/reconchess/)
 import random
 import chess
 from player import Player
+import numpy as np
 
 
 # TODO: Rename this class to what you would like your bot to be named during the game.
@@ -380,13 +381,22 @@ class StateEncoding():
             self.dists[square] = observation_vector
         self.update_board()
 
+    def export(self):
+        state_copy = np.copy(self.dists)
+        for square in state_copy:
+            if square.__len__() > 0:
+                square[0] = 1 if square[0] == self.color else 0
+        return state_copy
+
 if __name__ == '__main__':
     state = StateEncoding(chess.WHITE)
     print(state.compute_reward())
+    print(state.export())
     move = chess.Move.from_uci("e2e4")
     print(state.compute_move_reward_change(move))
     state.update_state_with_move(move)
     print(state.compute_reward())
+    print(state.export())
 
 
 
