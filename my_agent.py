@@ -218,78 +218,22 @@ class StateEncoding():
             ]
         }
         if not color:
-            self.reward_map = {
-                chess.PAWN: [
-                    0, 0, 0, 0, 0, 0, 0, 0,
-                    0.5, 1, 1, -2, -2, 1, 1, 0.5,
-                    0.5, -0.5, -1, 0, 0, -1, -0.5, 0.5,
-                    0, 0, 0, 2, 2, 0, 0, 0,
-                    0.5, 0.5, 1, 2.5, 2.5, 1, 0.5, 0.5,
-                    1, 1, 2, 3, 3, 2, 1, 1,
-                    5, 5, 5, 5, 5, 5, 5, 5,
-                    0, 0, 0, 0, 0, 0, 0, 0
-                ].reverse(),
-                chess.KNIGHT: [
-                    -5, -4, -3, -3, -3, -3, -4, -5,
-                    -4, -2, 0, 0.5, 0.5, 0, -2, -4,
-                    -3, 0.5, 1, 1.5, 1.5, 1, 0.5, -3,
-                    -3, 0, 1.5, 2.0, 2.0, 1.5, 0, -3,
-                    -3, 0.5, 1.5, 2, 2, 1.5, 0.5, -3,
-                    -3, 0, 1, 1.5, 1.5, 1, 0, -3,
-                    -4, -2, 0, 0, 0, 0, -2, -4,
-                    -5, -4, -3, -3, -3, -3, -4, -5
-                ].reverse(),
-                chess.BISHOP: [
-                    -2, -1, -1, -1, -1, -1, -1, -2,
-                    -1, 0.5, 0, 0, 0, 0, 0.5, -1,
-                    -1, 1, 1, 1, 1, 1, 1, -1,
-                    -1, 0, 1, 1, 1, 1, 0, -1,
-                    -1, 0.5, 0.5, 1, 1, 0.5, 0.5, -1,
-                    -1, 0, 0.5, 1, 1, 0.5, 0, -1,
-                    -1, 0, 0, 0, 0, 0, 0, -1,
-                    -2, -1, -1, -1, -1, -1, -1, -2
-                ].reverse(),
-                chess.ROOK: [
-                    0, 0, 0, 0.5, 0.5, 0, 0, 0,
-                    -0.5, 0, 0, 0, 0, 0, 0, -0.5,
-                    -0.5, 0, 0, 0, 0, 0, 0, -0.5,
-                    -0.5, 0, 0, 0, 0, 0, 0, -0.5,
-                    -0.5, 0, 0, 0, 0, 0, 0, -0.5,
-                    -0.5, 0, 0, 0, 0, 0, 0, -0.5,
-                    0.5, 1, 1, 1, 1, 1, 1, 0.5,
-                    0, 0, 0, 0, 0, 0, 0, 0
-                ].reverse(),
-                chess.QUEEN: [
-                    -2, -1, -1, -0.5, -0.5, -1, -1, -2,
-                    -1, 0, 0.5, 0, 0, 0, 0, -1,
-                    -1, 0.5, 0.5, 0.5, 0.5, 0.5, 0, -1,
-                    0, 0, 0.5, 0.5, 0.5, 0.5, 0, -0.5,
-                    -0.5, 0, 0.5, 0.5, 0.5, 0.5, 0, -0.5,
-                    -1, 0, 0.5, 0.5, 0.5, 0.5, 0, -1,
-                    -1, 0, 0, 0, 0, 0, 0, -1,
-                    -2, -1, -1, -0.5, -0.5, -1, -1, -2
-                ].reverse(),
-                chess.KING: [
-                    2, 3, 1, 0, 0, 1, 3, 2,
-                    2, 2, 0, 0, 0, 0, 2, 2,
-                    -1, -2, -2, -2, -2, -2, -2, -1,
-                    -2, -3, -3, -4, -4, -3, -3, -2,
-                    -3, -4, -4, -5, -5, -4, -4, -3,
-                    -3, -4, -4, -5, -5, -4, -4, -3,
-                    -3, -4, -4, -5, -5, -4, -4, -3,
-                    -3, -4, -4, -5, -5, -4, -4, -3,
-                ].reverse()
-            }
+            for key in self.reward_map.keys():
+                self.reward_map[key] = list(reversed(self.reward_map[key]))
         self.material_differential = 0
         self.dists = [
             [True, 0, 0, 0, 1, 0, 0], [True, 0, 1, 0, 0, 0, 0], [True, 0, 0, 1, 0, 0, 0], [True, 0, 0, 0, 0, 1, 0],
             [True, 0, 0, 0, 0, 0, 1], [True, 0, 0, 1, 0, 0, 0], [True, 0, 1, 0, 0, 0, 0], [True, 0, 0, 0, 1, 0, 0],
             [True, 1, 0, 0, 0, 0, 0], [True, 1, 0, 0, 0, 0, 0], [True, 1, 0, 0, 0, 0, 0], [True, 1, 0, 0, 0, 0, 0],
             [True, 1, 0, 0, 0, 0, 0], [True, 1, 0, 0, 0, 0, 0], [True, 1, 0, 0, 0, 0, 0], [True, 1, 0, 0, 0, 0, 0],
-            [],[],[],[],[],[],[],[],
-            [],[],[],[],[],[],[],[],
-            [],[],[],[],[],[],[],[],
-            [],[],[],[],[],[],[],[],
+            [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0],
             [False, 1, 0, 0, 0, 0, 0], [False, 1, 0, 0, 0, 0, 0], [False, 1, 0, 0, 0, 0, 0], [False, 1, 0, 0, 0, 0, 0],
             [False, 1, 0, 0, 0, 0, 0], [False, 1, 0, 0, 0, 0, 0], [False, 1, 0, 0, 0, 0, 0], [False, 1, 0, 0, 0, 0, 0],
             [False, 0, 0, 0, 1, 0, 0], [False, 0, 1, 0, 0, 0, 0], [False, 0, 0, 1, 0, 0, 0], [False, 0, 0, 0, 0, 1, 0],
@@ -305,9 +249,12 @@ class StateEncoding():
         }
 
     def believe_square_is_empty(self, square):
-        self.dists[square].clear()
+        self.dists[square] = [0,0,0,0,0,0,0]
 
-    def update_board(self):
+    def is_empty(self, square):
+        return self.dists[square] == [0, 0, 0, 0, 0, 0, 0]
+
+    def update_board(self, threshold=0.75):
         print(self.board)
         self.board.clear()
         for square_index in range(64):
@@ -315,7 +262,7 @@ class StateEncoding():
             arr_len = square.__len__()
             color = False
             piece = None
-            if arr_len > 0:
+            if not self.is_empty(square_index):
                 color = square[0]
                 piece = 0
                 duplicates = False
@@ -327,12 +274,13 @@ class StateEncoding():
                         duplicates = False
                     elif max_prob == square[x]:
                       duplicates = True
-            if piece is None or duplicates:
+            if piece is None or duplicates or max_prob < threshold:
                 self.board.remove_piece_at(square_index)
             else:
                 self.board.set_piece_at(square_index, chess.Piece(piece, color))
         print("============  Before probability update  =============================================")
         print(self.board)
+        self.board.turn = self.color
         print("============   After probability update  =============================================")
 
     def compute_reward(self):
@@ -360,6 +308,29 @@ class StateEncoding():
             move_vector[piece] = 1
             self.dists[move.to_square] = move_vector
         self.update_board()
+
+    def drift(self, handle_capture = False, capture_square = None):
+        initial_vector = [not self.color, 0, 0, 0, 0, 0, 0]
+        opp_state = StateEncoding(not self.color)
+        opp_state.board = self.board
+        opp_state.dists = self.dists
+        opp_state.board.turn = opp_state.color
+        opp_state.update_board(threshold=0.0)
+        print(opp_state.board.legal_moves)
+        for move in opp_state.board.legal_moves:
+            assert isinstance(move, chess.Move)
+            reward_diff = opp_state.compute_move_reward_change(move)
+            end_square = move.to_square
+            if self.dists[end_square][0] == self.color and handle_capture:
+                reward_diff += self.piece_values(np.argmax(self.dists[end_square]))
+            else:
+                self.dists[end_square] = initial_vector
+            print(reward_diff)
+            prob_delta = (0.5 + (reward_diff/10)) / opp_state.board.legal_moves.count()
+            piece = self.board.piece_at(move.from_square).piece_type
+            self.dists[move.from_square][piece] -= prob_delta
+            self.dists[move.to_square][piece] += prob_delta
+            pass
 
     def update_state_after_opponent_move(self, capture, capture_square):
         # probability drift to uniform as the game progresses and the picture becomes cloudier
@@ -390,13 +361,10 @@ class StateEncoding():
 
 if __name__ == '__main__':
     state = StateEncoding(chess.WHITE)
-    print(state.compute_reward())
-    print(state.export())
-    move = chess.Move.from_uci("e2e4")
-    print(state.compute_move_reward_change(move))
-    state.update_state_with_move(move)
-    print(state.compute_reward())
-    print(state.export())
+    print(state.dists)
+    state.drift()
+    print(state.dists)
+    state.update_board(threshold = 0.0)
 
 
 
