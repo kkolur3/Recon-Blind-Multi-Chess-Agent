@@ -1,6 +1,7 @@
 import tensorflow as tf
 import numpy as np
 from tensorflow.python.ops import rnn, rnn_cell
+import os
 
 rnn_size = 128
 discount_factor = 0.9
@@ -15,7 +16,7 @@ num_outputs = 64 * 64 * 6
 
 # Placeholders
 sess = tf.InteractiveSession()
-board = tf.placeholder(tf.float32, shape=(None, in_width, in_height, in_channel), name="board")
+board = tf.placeholder(tf.float32, shape=(None, in_width * in_height, in_channel, 1), name="board")
 actions = tf.placeholder(tf.float32, shape=(None, num_outputs), name="actions")
 hidden_state = tf.placeholder(tf.float32, shape=(1, rnn_size), name="hidden")
 cell_state = tf.placeholder(tf.float32, shape=(1, rnn_size), name="cell")
@@ -23,13 +24,13 @@ q_val = tf.placeholder(tf.float32, shape=1, name="q_val")
 train_length = tf.placeholder(dtype=tf.int32)
 
 # Create CNNs
-conv_1_weights = tf.get_variable("conv_1_weights", shape=(7, 7, 7, 32),
+conv_1_weights = tf.get_variable("conv_1_weights", shape=(3, 3, 1, 32),
                                  dtype="float32", initializer=tf.contrib.layers.xavier_initializer())
 conv_1_bias = tf.get_variable("conv_1_bias", shape=32, initializer=tf.constant_initializer(0.0))
-conv_2_weights = tf.get_variable("conv_2_weights", shape=(7, 7, 32, 64),
+conv_2_weights = tf.get_variable("conv_2_weights", shape=(3, 3, 32, 64),
                                  dtype="float32", initializer=tf.contrib.layers.xavier_initializer())
 conv_2_bias = tf.get_variable("conv_2_bias", shape=64, initializer=tf.constant_initializer(0.0))
-conv_3_weights = tf.get_variable("conv_3_weights", shape=(7, 7, 64, 128),
+conv_3_weights = tf.get_variable("conv_3_weights", shape=(3, 3, 64, 128),
                                  dtype="float32", initializer=tf.contrib.layers.xavier_initializer())
 conv_3_bias = tf.get_variable("conv_3_bias", shape=128, initializer=tf.constant_initializer(0.0))
 
@@ -83,8 +84,10 @@ train = tf.train.GradientDescentOptimizer(learning_rate).minimize(loss)
 sess.run(tf.global_variables_initializer())
 saver = tf.train.Saver()
 
+
 def softmax(x):
     return 1.0 / (1 + np.exp(-x))
+
 
 def forward_pass(input_tensor, action_tensor, hidden_state_tensor, cell_state_tensor):
     probs, hidden = sess.run([logits, states], feed_dict={board: input_tensor,
@@ -95,4 +98,44 @@ def forward_pass(input_tensor, action_tensor, hidden_state_tensor, cell_state_te
     return probs, hidden
 
 
+def init_dist():
+    #encoding = [color, pawn, knight, bishop, rook, queen, king]
+    dist = np.zeros(shape=(64, 7))
+    for i in range(64):
+        if i == 0 or i == 7 or i == 56 or i == 63: # ROOK
+            square_dist = [1, 0, 0, 0, 1, 0, 0]
+        elif i == 1 or i == 6 or i == 57 or i == 62: # KNIGHT
+            square_dist = [1, 0, 1, 0, 0, 0, 0]
+        elif i == 2 or i == 5 or i == 58 or i == 61: # BISHOP
+            square_dist = [1, 0, 0, 1, 0, 0, 0]
+        elif i == 3 or i == 59: # QUEEN
+            square_dist = [1, 0, 0, 0, 0, 1, 0]
+        elif i == 4 or i == 60: # KING
+            square_dist = [1, 0, 0, 0, 0, 0, 1]
+        elif (i > 7 and i < 16) or (i > 47 and i < 56):
+            square_dist = [1, 1, 0, 0, 0, 0, 0]
+        else:
+            square_dist = [0, 0, 0, 0, 0, 0, 0]
+        if i > 47:
+            square_dist[0] = -square_dist[0]
+        dist[i] = square_dist
+    return dist
 
+def create_episodes():
+    game_history_dir = "/Users/keshav/Documents/CS 4649/Recon-Blind-Multi-Chess-Agent/GameHistory"
+    state_encoding = {"p": 1, "n": 2, "b": 3, "r": 4, "q": 5, "k": 6}
+    episodes = []
+    for filename in os.listdir(game_history_dir):
+        if "game" in filename:
+            ourTurn = False
+            boardDist = np.zeros(shape=(64,7))
+
+            episode = []
+            f_id = open(os.path.join(game_history_dir+"/", filename))
+            for line in f_id:
+                if "WHITE" in line:
+
+
+
+
+create_episodes()
