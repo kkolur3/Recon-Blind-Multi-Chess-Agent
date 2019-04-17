@@ -49,7 +49,7 @@ class MyAgent(Player):
         """
         assert isinstance(self.board, chess.Board)
         if captured_piece:
-             self.board.remove_piece_at(captured_square)
+            captured_piece = self.board.remove_piece_at(captured_square).piece_type
         self.board.turn = self.color
         self.state.update_state_after_opponent_move(captured_piece, captured_square)
         pass
@@ -136,7 +136,7 @@ class MyAgent(Player):
         self.board.push(taken_move if taken_move is not None else chess.Move.null())
         print(self.board)
         print("==================================================================================")
-        self.state.update_state_with_move(taken_move)
+        self.state.update_state_with_move(taken_move, captured_piece, captured_square)
 
         pass
         
@@ -254,8 +254,7 @@ class StateEncoding():
     def is_empty(self, square):
         return self.dists[square] == [0, 0, 0, 0, 0, 0, 0]
 
-    def update_board(self, threshold=0.8
-                     ):
+    def update_board(self, threshold=0.8):
         print(self.board)
         self.board.clear()
         for square_index in range(64):
@@ -301,13 +300,19 @@ class StateEncoding():
             return \
                 self.reward_map[piece_moved][move.to_square] - self.reward_map[piece_moved][move.from_square]
 
-    def update_state_with_move(self, move):
+    def update_state_with_move(self, move, captured_piece, captured_square):
         if move is not None:
             piece = self.board.piece_at(move.from_square).piece_type
             self.dists[move.from_square] = [0,0,0,0,0,0,0]
             move_vector = [self.color, 0, 0, 0, 0, 0, 0]
             move_vector[piece] = 1
             self.dists[move.to_square] = move_vector
+            if captured_piece:
+                captured_piece = self.board.remove_piece_at(captured_square)
+                if captured_piece is None:
+                    self.material_differential += 1
+                else:
+                    self.material_differential += self.piece_values[captured_piece.piece_type]
         self.update_board()
 
     def drift(self):
