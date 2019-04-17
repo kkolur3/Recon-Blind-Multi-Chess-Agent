@@ -49,7 +49,7 @@ class MyAgent(Player):
         """
         assert isinstance(self.board, chess.Board)
         if captured_piece:
-             self.board.remove_piece_at(captured_square)
+            captured_piece = self.board.remove_piece_at(captured_square).piece_type
         self.board.turn = self.color
         self.state.update_state_after_opponent_move(captured_piece, captured_square)
         pass
@@ -136,7 +136,7 @@ class MyAgent(Player):
         self.board.push(taken_move if taken_move is not None else chess.Move.null())
         print(self.board)
         print("==================================================================================")
-        self.state.update_state_with_move(taken_move)
+        self.state.update_state_with_move(taken_move, captured_piece, captured_square)
 
         pass
         
@@ -254,7 +254,7 @@ class StateEncoding():
     def is_empty(self, square):
         return self.dists[square] == [0, 0, 0, 0, 0, 0, 0]
 
-    def update_board(self, threshold=0.75):
+    def update_board(self, threshold=0.8):
         print(self.board)
         self.board.clear()
         for square_index in range(64):
@@ -300,16 +300,22 @@ class StateEncoding():
             return \
                 self.reward_map[piece_moved][move.to_square] - self.reward_map[piece_moved][move.from_square]
 
-    def update_state_with_move(self, move):
+    def update_state_with_move(self, move, captured_piece, captured_square):
         if move is not None:
             piece = self.board.piece_at(move.from_square).piece_type
-            self.dists[move.from_square] = []
+            self.dists[move.from_square] = [0,0,0,0,0,0,0]
             move_vector = [self.color, 0, 0, 0, 0, 0, 0]
             move_vector[piece] = 1
             self.dists[move.to_square] = move_vector
+            if captured_piece:
+                captured_piece = self.board.remove_piece_at(captured_square)
+                if captured_piece is None:
+                    self.material_differential += 1
+                else:
+                    self.material_differential += self.piece_values[captured_piece.piece_type]
         self.update_board()
 
-    def drift(self, handle_capture = False, capture_square = None):
+    def drift(self):
         initial_vector = [not self.color, 0, 0, 0, 0, 0, 0]
         opp_state = StateEncoding(not self.color)
         opp_state.board = self.board
@@ -321,23 +327,52 @@ class StateEncoding():
             assert isinstance(move, chess.Move)
             reward_diff = opp_state.compute_move_reward_change(move)
             end_square = move.to_square
-            if self.dists[end_square][0] == self.color and handle_capture:
-                reward_diff += self.piece_values(np.argmax(self.dists[end_square]))
+            if not self.is_empty(end_square) and self.dists[end_square][0] == self.color:
+                continue
             else:
                 self.dists[end_square] = initial_vector
             print(reward_diff)
             prob_delta = (0.5 + (reward_diff/10)) / opp_state.board.legal_moves.count()
             piece = self.board.piece_at(move.from_square).piece_type
             self.dists[move.from_square][piece] -= prob_delta
+            if self.dists[move.from_square][piece] < 0:
+                self.dists[move.from_square][piece] = 0
             self.dists[move.to_square][piece] += prob_delta
-            pass
+            if self.dists[move.to_square][piece] > 1:
+                self.dists[move.to_square][piece] = 1
+        self.normalize_dist()
+
+    def normalize_dist(self):
+        normalization_factors = [0,0,0,0,0,0]
+        for square in range(64):
+            if not self.is_empty(square) and self.dists[square][0] != self.color:
+                square_dist = self.dists[square]
+                for piece in self.reward_map:
+                    normalization_factors[piece-1] += square_dist[piece]
+        for x in range(normalization_factors.__len__()):
+            if normalization_factors[x] > 0:
+                normalization_factors[x] = 4/normalization_factors[x]
+
+        for square in range(64):
+            if not self.is_empty(square) and self.dists[square][0] != self.color:
+                square_dist = self.dists[square]
+                for piece in self.reward_map:
+                    square_dist[piece] *= normalization_factors[piece - 1]
+        for square in range(64):
+            for piece in range(1, 7):
+                if self.dists[square][piece] == float('nan') or self.dists[square][piece] < 0:
+                    self.dists[square][piece] = 0
+                elif self.dists[square][piece] == float('inf') or self.dists[square][piece] > 1:
+                    self.dists[square][piece] = 1
+        print(self.dists)
 
     def update_state_after_opponent_move(self, capture, capture_square):
         # probability drift to uniform as the game progresses and the picture becomes cloudier
         if capture:
             piece = self.board.piece_at(capture_square).piece_type
             self.material_differential -= self.piece_values[piece]
-            self.dists[capture_square] = [not self.color, 0.167, 0.167, 0.167, 0.167, 0.167, 0.167]
+            self.dists[capture_square] = [0, 0, 0, 0, 0, 0, 0]
+        self.drift()
 
     def update_state_after_sense(self, observations):
         for observation in observations:
@@ -348,7 +383,7 @@ class StateEncoding():
                 observation_vector[0] = piece.color
                 observation_vector[piece.piece_type] = 1
             else:
-                observation_vector = []
+                observation_vector = [0,0,0,0,0,0,0]
             self.dists[square] = observation_vector
         self.update_board()
 
