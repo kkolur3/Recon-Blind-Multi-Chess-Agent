@@ -265,6 +265,15 @@ class StateEncoding():
             (1, 1, 2): 14,
             (1, 1, 3): 15,
             (1, 1, 4): 16,
+            (-1, 0, 2): 17,
+            (-1, 0, 3): 18,
+            (-1, 0, 4): 19,
+            (-1, -1, 2): 20,
+            (-1, -1, 3): 21,
+            (-1, -1, 4): 22,
+            (-1, 1, 2): 23,
+            (-1, 1, 3): 24,
+            (-1, 1, 4): 25
         }
         self.unit_moves = {
             (1,0): 0,
@@ -287,7 +296,7 @@ class StateEncoding():
             0 if move.promotion is None else move.promotion
         )
         init_vector = [
-            0 for x in range(64*73)
+            0 for x in range(64*82)
         ]
         if move is None or move == chess.Move.null() or self.board.piece_at(move.from_square) is None:
             return init_vector
@@ -313,7 +322,7 @@ class StateEncoding():
         found_move = False
         while square < 64:
             move_type = 0
-            while move_type < 73:
+            while move_type < 82:
                 found_move = encoding[square * 73 + move_type] == 1
                 if found_move:
                     break
