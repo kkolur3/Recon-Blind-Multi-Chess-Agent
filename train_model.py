@@ -121,21 +121,82 @@ def init_dist():
         dist[i] = square_dist
     return dist
 
+piece_to_idx = {" p ": 1, " n ": 2, " b ": 3, " r ": 4, " q ": 5, " k ": 6}
+idx_to_piece = ["p", "n", "b", "r", "q", "k"]
+
+
 def create_episodes():
     game_history_dir = "/Users/keshav/Documents/CS 4649/Recon-Blind-Multi-Chess-Agent/GameHistory"
-    state_encoding = {"p": 1, "n": 2, "b": 3, "r": 4, "q": 5, "k": 6}
     episodes = []
     for filename in os.listdir(game_history_dir):
+        whiteTurn = False
         if "game" in filename:
-            ourTurn = False
+            whiteTurn = False
+            senseTurn = False
+            boardState = ""
             boardDist = np.zeros(shape=(64,7))
-
+            senseLoc = None
+            move = None
             episode = []
             f_id = open(os.path.join(game_history_dir+"/", filename))
             for line in f_id:
                 if "WHITE" in line:
+                    whiteTurn = True
+                if whiteTurn and "Sense" in line:
+                    senseTurn = True
+                    senseLoc = line[-3:-1]
+                    line_counter = 7
+                if whiteTurn and "Move" in line:
+                    move = line[-5:-1]
+                    whiteTurn = False
+                if whiteTurn:
+                    boardState += (line + "\n")
+                lineSplit = line.split("|")
+                if whiteTurn and senseTurn and lineSplit[0].isdigit():
+                    row = int(lineSplit[0])
+                    for i in range(1, 9):
+                        piece = lineSplit[i].lower()
+                        if piece == " p " or piece == " n " or piece == " b " or piece == " r " or piece == " q " or piece == " k ":
+                            board_idx = (row - 1) * 8 + (i - 1)
+                            square_dist = np.zeros(7)
+                            if lineSplit[i].upper() == lineSplit[i]:
+                                square_dist[0] = 1
+                            else:
+                                square_dist[0] = -1
+                            piece_dist = piece_to_idx[piece]
+                            square_dist[piece_dist] = 1
+                            boardDist[board_idx] = square_dist
+                    line_counter -= 1
+                    if line_counter < 0 and whiteTurn and move:
+                        print("Sense Loc " + senseLoc)
+                        print("Move: " + move)
+                        print(boardState)
+                        print(boardDist)
+                        senseTurn = False
+                        line_counter = 7
+                        boardState = ""
+                        boardDist = np.zeros(shape=(64, 7))
+
+letter_to_row = {"a": 0, "b": 1, "c": 2, "d": 3, "e": 4, "f": 5, "g": 6, "h": 7}
 
 
+def convertLocToSqIdx(senseLoc):
+    return (int(senseLoc[1]) - 1) * 8 + (letter_to_row[senseLoc[0]])
+
+
+def convertMove(boardDist, move):
+    loc1 = move[0:1]
+    sq1 = convertLocToSqIdx(loc1)
+    loc2 = move[2:3]
+    sq2 = convertLocToSqIdx(loc2)
+
+    sq_dist = boardDist[sq1]
+    idx = np.where[sq_dist == 1]
+
+    actions = np.zeros(shape=(num_outputs, 1))
+    actions[idx * sq1 * sq2] = 1
+    return actions
 
 
 create_episodes()
+print(convertLocToSqIdx("a1"))
