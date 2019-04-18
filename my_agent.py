@@ -488,6 +488,14 @@ class StateEncoding():
                 square[0] = 1 if square[0] == self.color else 0
         return state_copy
 
+    def import_dist(self, dist):
+        dist_copy = np.copy(dist)
+        for square in dist_copy:
+            square[0] = self.color if square[0] == 1 else not self.color
+        self.dists = dist_copy
+
+
+
 
 
 
