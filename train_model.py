@@ -3,6 +3,7 @@ import numpy as np
 from tensorflow.python.ops import rnn, rnn_cell
 import os
 import my_agent
+import chess
 
 rnn_size = 128
 discount_factor = 0.9
@@ -25,15 +26,15 @@ q_val = tf.placeholder(tf.float32, shape=1, name="q_val")
 train_length = tf.placeholder(dtype=tf.int32)
 
 # Create CNNs
-conv_1_weights = tf.get_variable("conv_1_weights", shape=(3, 3, 1, 32),
+conv_1_weights = tf.get_variable("conv_1_weights", shape=(3, 3, 1, 4),
                                  dtype="float32", initializer=tf.contrib.layers.xavier_initializer())
-conv_1_bias = tf.get_variable("conv_1_bias", shape=32, initializer=tf.constant_initializer(0.0))
-conv_2_weights = tf.get_variable("conv_2_weights", shape=(3, 3, 32, 64),
+conv_1_bias = tf.get_variable("conv_1_bias", shape=4, initializer=tf.constant_initializer(0.0))
+conv_2_weights = tf.get_variable("conv_2_weights", shape=(3, 3, 4, 8),
                                  dtype="float32", initializer=tf.contrib.layers.xavier_initializer())
-conv_2_bias = tf.get_variable("conv_2_bias", shape=64, initializer=tf.constant_initializer(0.0))
-conv_3_weights = tf.get_variable("conv_3_weights", shape=(3, 3, 64, 128),
+conv_2_bias = tf.get_variable("conv_2_bias", shape=8, initializer=tf.constant_initializer(0.0))
+conv_3_weights = tf.get_variable("conv_3_weights", shape=(3, 3, 8, 16),
                                  dtype="float32", initializer=tf.contrib.layers.xavier_initializer())
-conv_3_bias = tf.get_variable("conv_3_bias", shape=128, initializer=tf.constant_initializer(0.0))
+conv_3_bias = tf.get_variable("conv_3_bias", shape=16, initializer=tf.constant_initializer(0.0))
 
 # Run board through CNNs
 conv1 = tf.nn.relu(tf.nn.conv2d(board, conv_1_weights, strides=[1, 1, 1, 1], padding="SAME") + conv_1_bias)
@@ -127,11 +128,13 @@ idx_to_piece = ["p", "n", "b", "r", "q", "k"]
 
 
 def create_episodes():
+    state = my_agent.StateEncoding(chess.WHITE)
+
     game_history_dir = "/Users/keshav/Documents/CS 4649/Recon-Blind-Multi-Chess-Agent/GameHistory"
     episodes = []
     prevBoardDist = init_dist()
     curBoardDist = None
-    action_tensor = np.zeros(shape=(1,64*73)) # chess.move from uci method that u pass in move string
+    action_tensor = np.zeros(shape=(1, 64*73)) # chess.move from uci method that u pass in move string
     hidden_stat = np.zeros((1, rnn_size))
     cell_stat = np.zeros((1, rnn_size))
     reward = 0.0
@@ -146,12 +149,9 @@ def create_episodes():
     move = None
     episode = []
 
-    next_action = np.zeros(shape=64*73)
+    next_action = np.zeros(shape=(1, 64*73))
     f_id = open(filename)
     for line in f_id:
-        probs, hidden = forward_pass(prevBoardDist.reshape((1, 64, 7, 1)),
-                                        np.array(action_tensor), hidden_stat, cell_stat)
-
         if "WHITE" in line:
             whiteTurn = True
         if whiteTurn and "Sense" in line:
@@ -183,9 +183,16 @@ def create_episodes():
                 print("Sense Loc " + senseLoc)
                 print("Move: " + move)
                 print(boardState)
-                print(boardDist)
+                # print(boardDist)
                 senseTurn = False
                 line_counter = 7
+                if move == "None":
+                    move = "0000"
+                uciMove = chess.Move.from_uci(move)
+                action = state.create_move_encoding(uciMove)
+                print(action_tensor.shape)
+                probs, hidden = forward_pass(prevBoardDist.reshape((1, 64, 7, 1)),
+                                             np.array(action_tensor), hidden_stat, cell_stat)
                 episode.append({"prevBoard": prevBoardDist, "action": action, "reward": reward,
                                  "curBoard": boardDist, "hidden": hidden.h, "cell": hidden.c})
                 hidden_stat = hidden.h
