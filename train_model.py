@@ -2,6 +2,8 @@ import tensorflow as tf
 import numpy as np
 from tensorflow.python.ops import rnn, rnn_cell
 import os
+import my_agent
+import chess
 
 rnn_size = 128
 discount_factor = 0.9
@@ -12,7 +14,7 @@ learning_rate = 0.001
 in_width = 8
 in_height = 8
 in_channel = 7
-num_outputs = 64 * 64 * 6
+num_outputs = 64 * 73
 
 # Placeholders
 sess = tf.InteractiveSession()
@@ -24,15 +26,15 @@ q_val = tf.placeholder(tf.float32, shape=1, name="q_val")
 train_length = tf.placeholder(dtype=tf.int32)
 
 # Create CNNs
-conv_1_weights = tf.get_variable("conv_1_weights", shape=(3, 3, 1, 32),
+conv_1_weights = tf.get_variable("conv_1_weights", shape=(3, 3, 1, 4),
                                  dtype="float32", initializer=tf.contrib.layers.xavier_initializer())
-conv_1_bias = tf.get_variable("conv_1_bias", shape=32, initializer=tf.constant_initializer(0.0))
-conv_2_weights = tf.get_variable("conv_2_weights", shape=(3, 3, 32, 64),
+conv_1_bias = tf.get_variable("conv_1_bias", shape=4, initializer=tf.constant_initializer(0.0))
+conv_2_weights = tf.get_variable("conv_2_weights", shape=(3, 3, 4, 8),
                                  dtype="float32", initializer=tf.contrib.layers.xavier_initializer())
-conv_2_bias = tf.get_variable("conv_2_bias", shape=64, initializer=tf.constant_initializer(0.0))
-conv_3_weights = tf.get_variable("conv_3_weights", shape=(3, 3, 64, 128),
+conv_2_bias = tf.get_variable("conv_2_bias", shape=8, initializer=tf.constant_initializer(0.0))
+conv_3_weights = tf.get_variable("conv_3_weights", shape=(3, 3, 8, 16),
                                  dtype="float32", initializer=tf.contrib.layers.xavier_initializer())
-conv_3_bias = tf.get_variable("conv_3_bias", shape=128, initializer=tf.constant_initializer(0.0))
+conv_3_bias = tf.get_variable("conv_3_bias", shape=16, initializer=tf.constant_initializer(0.0))
 
 # Run board through CNNs
 conv1 = tf.nn.relu(tf.nn.conv2d(board, conv_1_weights, strides=[1, 1, 1, 1], padding="SAME") + conv_1_bias)
@@ -126,56 +128,120 @@ idx_to_piece = ["p", "n", "b", "r", "q", "k"]
 
 
 def create_episodes():
+    state = my_agent.StateEncoding(chess.WHITE)
+
     game_history_dir = "/Users/keshav/Documents/CS 4649/Recon-Blind-Multi-Chess-Agent/GameHistory"
     episodes = []
-    for filename in os.listdir(game_history_dir):
-        whiteTurn = False
-        if "game" in filename:
+    prevBoardDist = init_dist()
+    curBoardDist = None
+    action_tensor = np.zeros(shape=(1, 64*73)) # chess.move from uci method that u pass in move string
+    hidden_stat = np.zeros((1, rnn_size))
+    cell_stat = np.zeros((1, rnn_size))
+    reward = 0.0
+    # for filename in os.listdir(game_history_dir):
+    #     if "game" in filename:
+    filename = "/Users/keshav/Documents/CS 4649/Recon-Blind-Multi-Chess-Agent/GameHistory/2019-04-08_17-12-41-617253game_boards.txt"
+    whiteTurn = False
+    senseTurn = False
+    boardState = ""
+    boardDist = np.zeros(shape=(64, 7))
+    senseLoc = None
+    move = None
+    episode = []
+
+    next_action = np.zeros(shape=(1, 64*73))
+    f_id = open(filename)
+    for line in f_id:
+        if "WHITE" in line:
+            whiteTurn = True
+        if whiteTurn and "Sense" in line:
+            senseTurn = True
+            senseLoc = line[-3:-1]
+            line_counter = 7
+        if whiteTurn and "Move" in line:
+            move = line[-5:-1]
             whiteTurn = False
-            senseTurn = False
-            boardState = ""
-            boardDist = np.zeros(shape=(64,7))
-            senseLoc = None
-            move = None
-            episode = []
-            f_id = open(os.path.join(game_history_dir+"/", filename))
-            for line in f_id:
-                if "WHITE" in line:
-                    whiteTurn = True
-                if whiteTurn and "Sense" in line:
-                    senseTurn = True
-                    senseLoc = line[-3:-1]
-                    line_counter = 7
-                if whiteTurn and "Move" in line:
-                    move = line[-5:-1]
-                    whiteTurn = False
-                if whiteTurn:
-                    boardState += (line + "\n")
-                lineSplit = line.split("|")
-                if whiteTurn and senseTurn and lineSplit[0].isdigit():
-                    row = int(lineSplit[0])
-                    for i in range(1, 9):
-                        piece = lineSplit[i].lower()
-                        if piece == " p " or piece == " n " or piece == " b " or piece == " r " or piece == " q " or piece == " k ":
-                            board_idx = (row - 1) * 8 + (i - 1)
-                            square_dist = np.zeros(7)
-                            if lineSplit[i].upper() == lineSplit[i]:
-                                square_dist[0] = 1
-                            else:
-                                square_dist[0] = -1
-                            piece_dist = piece_to_idx[piece]
-                            square_dist[piece_dist] = 1
-                            boardDist[board_idx] = square_dist
-                    line_counter -= 1
-                    if line_counter < 0 and whiteTurn and move:
-                        print("Sense Loc " + senseLoc)
-                        print("Move: " + move)
-                        print(boardState)
-                        print(boardDist)
-                        senseTurn = False
-                        line_counter = 7
-                        boardState = ""
-                        boardDist = np.zeros(shape=(64, 7))
+        if whiteTurn:
+            boardState += (line + "\n")
+        lineSplit = line.split("|")
+        if whiteTurn and senseTurn and lineSplit[0].isdigit():
+            row = int(lineSplit[0])
+            for i in range(1, 9):
+                piece = lineSplit[i].lower()
+                if piece == " p " or piece == " n " or piece == " b " or piece == " r " or piece == " q " or piece == " k ":
+                    board_idx = (row - 1) * 8 + (i - 1)
+                    square_dist = np.zeros(7)
+                    if lineSplit[i].upper() == lineSplit[i]:
+                        square_dist[0] = 1
+                    else:
+                        square_dist[0] = -1
+                    piece_dist = piece_to_idx[piece]
+                    square_dist[piece_dist] = 1
+                    boardDist[board_idx] = square_dist
+            line_counter -= 1
+            if line_counter < 0 and whiteTurn and move:
+                print("Sense Loc " + senseLoc)
+                print("Move: " + move)
+                print(boardState)
+                # print(boardDist)
+                senseTurn = False
+                line_counter = 7
+                if move == "None":
+                    move = "0000"
+                uciMove = chess.Move.from_uci(move)
+                action = state.create_move_encoding(uciMove)
+                print(action_tensor.shape)
+                probs, hidden = forward_pass(prevBoardDist.reshape((1, 64, 7, 1)),
+                                             np.array(action_tensor), hidden_stat, cell_stat)
+                episode.append({"prevBoard": prevBoardDist, "action": action, "reward": reward,
+                                 "curBoard": boardDist, "hidden": hidden.h, "cell": hidden.c})
+                hidden_stat = hidden.h
+                cell_stat = hidden.c
+                action_tensor = next_action
+                boardState = ""
+                prevBoardDist = boardDist
+                boardDist = np.zeros(shape=(64, 7))
+    episodes.append(episode)
+    return episodes
+
+
+def train_network(iterations):
+    episode = create_episodes()
+    for i in range(iterations):
+        lo_sum = np.array([0.0])
+        prevBoards = []
+        actions = []
+        rewards = []
+        curBoards = []
+        hidden = []
+        cell = []
+        for instances in episode:
+            prevBoards.append(instances["prevBoard"])
+            actions.append(instances["action"])
+            rewards.append(instances["reward"])
+            curBoards.append(instances["curBoard"])
+            hidden.append(instances["hidden"])
+            cell.append(instances["cell"])
+        initial_hidden = hidden[0]
+        initial_cell = cell[0]
+
+        final_obs = curBoards[-1]
+        final_action = actions[-1]
+        final_reward = rewards[-1]
+        final_hidden = hidden[-1]
+        final_cell = hidden[-1]
+
+        probs, hidden = forward_pass(np.array(final_obs), np.array(final_action), final_cell, final_hidden)
+        q_value = final_reward + alpha * np.max(probs)
+        lo, _ = sess.run([loss, train], feed_dict={board: np.array(curBoards),
+                                                          actions: np.array(actions),
+                                                          hidden_state: np.zeros(shape=(1, rnn_size)),
+                                                          cell_state: np.zeros(shape=(1, rnn_size)),
+                                                          q_val: np.array([q_value]),
+                                                          train_length: 10})
+        lo_sum += lo
+    print("Loss: " + lo_sum)
+
 
 letter_to_row = {"a": 0, "b": 1, "c": 2, "d": 3, "e": 4, "f": 5, "g": 6, "h": 7}
 
@@ -183,20 +249,5 @@ letter_to_row = {"a": 0, "b": 1, "c": 2, "d": 3, "e": 4, "f": 5, "g": 6, "h": 7}
 def convertLocToSqIdx(senseLoc):
     return (int(senseLoc[1]) - 1) * 8 + (letter_to_row[senseLoc[0]])
 
+train_network(100)
 
-def convertMove(boardDist, move):
-    loc1 = move[0:1]
-    sq1 = convertLocToSqIdx(loc1)
-    loc2 = move[2:3]
-    sq2 = convertLocToSqIdx(loc2)
-
-    sq_dist = boardDist[sq1]
-    idx = np.where[sq_dist == 1]
-
-    actions = np.zeros(shape=(num_outputs, 1))
-    actions[idx * sq1 * sq2] = 1
-    return actions
-
-
-create_episodes()
-print(convertLocToSqIdx("a1"))
