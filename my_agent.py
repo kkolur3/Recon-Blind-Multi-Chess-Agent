@@ -264,7 +264,7 @@ class StateEncoding():
             (1, -1, 4): 13,
             (1, 1, 2): 14,
             (1, 1, 3): 15,
-            (1, 1, 4): 16
+            (1, 1, 4): 16,
         }
         self.unit_moves = {
             (1,0): 0,
@@ -406,7 +406,7 @@ class StateEncoding():
             self.dists[move.from_square] = [0,0,0,0,0,0,0]
             move_vector = [self.color, 0, 0, 0, 0, 0, 0]
             if piece == chess.PAWN \
-                    and (chess.square_rank(move.to_square) == 8 or chess.square_rank(move.to_square) == 1):
+                    and (chess.square_rank(move.to_square) == 7 or chess.square_rank(move.to_square) == 0):
                 piece = chess.QUEEN if move.promotion is None else move.promotion
             move_vector[piece] = 1
             self.dists[move.to_square] = move_vector
