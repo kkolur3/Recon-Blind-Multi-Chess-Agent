@@ -288,13 +288,19 @@ class StateEncoding():
         init_vector = [
             0 for x in range(64*73)
         ]
+        if move is None or move == chess.Move.null():
+            return init_vector
         if self.board.piece_at(move.from_square).piece_type == chess.KNIGHT \
                 or move.promotion is not None and move.promotion != chess.QUEEN:
             index = 56 + self.special_move_indices[move_key]
         else:
             king_steps = chess.square_distance(move.from_square, move.to_square)
-            unit_vector = (move_key[0]/king_steps, move_key[1]/king_steps)
-            index = 7 * self.unit_moves[unit_vector] + king_steps - 1
+            unit_vector = (move_key[0], move_key[1])
+            if king_steps != 0:
+                unit_vector = (move_key[0]/king_steps, move_key[1]/king_steps)
+
+            if unit_vector != (0,0):
+                index = 7 * self.unit_moves[unit_vector] + king_steps - 1
 
         print(index)
         init_vector[move.from_square * 73 + index] = 1
