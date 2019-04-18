@@ -254,7 +254,7 @@ class StateEncoding():
             (-2, 1, 0): 3,
             (-2, -1, 0): 4,
             (-1, -2, 0): 5,
-            (-1, 2, 0): 6,
+            (1, -2, 0): 6,
             (2, -1, 0): 7,
             (1, 0, 2): 8,
             (1, 0, 3): 9,
@@ -411,20 +411,22 @@ class StateEncoding():
 
     def update_state_with_move(self, move, captured_piece, captured_square):
         if move is not None:
-            piece = self.board.piece_at(move.from_square).piece_type
-            self.dists[move.from_square] = [0,0,0,0,0,0,0]
-            move_vector = [self.color, 0, 0, 0, 0, 0, 0]
-            if piece == chess.PAWN \
-                    and (chess.square_rank(move.to_square) == 7 or chess.square_rank(move.to_square) == 0):
-                piece = chess.QUEEN if move.promotion is None else move.promotion
-            move_vector[piece] = 1
-            self.dists[move.to_square] = move_vector
-            if captured_piece:
-                captured_piece = self.board.remove_piece_at(captured_square)
-                if captured_piece is None:
-                    self.material_differential += 1
-                else:
-                    self.material_differential += self.piece_values[captured_piece.piece_type]
+            piece = self.board.piece_at(move.from_square)
+            if piece is not None:
+                piece = piece.piece_type
+                self.dists[move.from_square] = [0,0,0,0,0,0,0]
+                move_vector = [self.color, 0, 0, 0, 0, 0, 0]
+                if piece == chess.PAWN \
+                        and (chess.square_rank(move.to_square) == 7 or chess.square_rank(move.to_square) == 0):
+                    piece = chess.QUEEN if move.promotion is None else move.promotion
+                move_vector[piece] = 1
+                self.dists[move.to_square] = move_vector
+                if captured_piece:
+                    captured_piece = self.board.remove_piece_at(captured_square)
+                    if captured_piece is None:
+                        self.material_differential += 1
+                    else:
+                        self.material_differential += self.piece_values[captured_piece.piece_type]
         self.update_board()
 
     def drift(self):
