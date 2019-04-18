@@ -143,6 +143,7 @@ def create_episodes():
     filename = "/Users/keshav/Documents/CS 4649/Recon-Blind-Multi-Chess-Agent/GameHistory/2019-04-08_17-12-41-617253game_boards.txt"
     whiteTurn = False
     senseTurn = False
+    moveTurn = False
     boardState = ""
     boardDist = np.zeros(shape=(64, 7))
     senseLoc = None
@@ -158,9 +159,6 @@ def create_episodes():
             senseTurn = True
             senseLoc = line[-3:-1]
             line_counter = 7
-        if whiteTurn and "Move" in line:
-            move = line[-5:-1]
-            whiteTurn = False
         if whiteTurn:
             boardState += (line + "\n")
         lineSplit = line.split("|")
@@ -179,28 +177,33 @@ def create_episodes():
                     square_dist[piece_dist] = 1
                     boardDist[board_idx] = square_dist
             line_counter -= 1
-            if line_counter < 0 and whiteTurn and move:
-                print("Sense Loc " + senseLoc)
-                print("Move: " + move)
-                print(boardState)
-                # print(boardDist)
+            if line_counter < 0 and whiteTurn and senseTurn and moveTurn:
                 senseTurn = False
+                moveTurn = False
                 line_counter = 7
-                if move == "None":
-                    move = "0000"
-                uciMove = chess.Move.from_uci(move)
-                action = state.create_move_encoding(uciMove)
-                print(action_tensor.shape)
-                probs, hidden = forward_pass(prevBoardDist.reshape((1, 64, 7, 1)),
-                                             np.array(action_tensor), hidden_stat, cell_stat)
-                episode.append({"prevBoard": prevBoardDist, "action": action, "reward": reward,
-                                 "curBoard": boardDist, "hidden": hidden.h, "cell": hidden.c})
-                hidden_stat = hidden.h
-                cell_stat = hidden.c
-                action_tensor = next_action
-                boardState = ""
-                prevBoardDist = boardDist
-                boardDist = np.zeros(shape=(64, 7))
+
+        if whiteTurn and "Move" in line:
+            move = line[-5:-1]
+            moveTurn = True
+            whiteTurn = False
+            print("Sense Loc " + senseLoc)
+            print("Move: " + move)
+            print(boardState)
+            # print(boardDist)
+            if move == "None":
+                move = "0000"
+            uciMove = chess.Move.from_uci(move)
+            action = state.create_move_encoding(uciMove)
+            probs, hidden = forward_pass(prevBoardDist.reshape((1, 64, 7, 1)),
+                                         np.array(action_tensor), hidden_stat, cell_stat)
+            episode.append({"prevBoard": prevBoardDist, "action": action, "reward": reward,
+                             "curBoard": boardDist, "hidden": hidden.h, "cell": hidden.c})
+            hidden_stat = hidden.h
+            cell_stat = hidden.c
+            action_tensor = next_action
+            boardState = ""
+            prevBoardDist = boardDist
+            boardDist = np.zeros(shape=(64, 7))
     episodes.append(episode)
     return episodes
 
