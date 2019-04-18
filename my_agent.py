@@ -376,6 +376,7 @@ class StateEncoding():
 
     def compute_reward(self):
         reward = self.material_differential
+        self.update_board()
         for x in range(64):
             piece = self.board.piece_at(x)
             if piece is not None and piece.color == self.color:
@@ -384,6 +385,7 @@ class StateEncoding():
 
     def compute_move_reward_change(self, move):
         assert isinstance(move, chess.Move)
+        self.update_board()
         piece_moved = self.board.piece_at(move.from_square).piece_type
         if not self.board.is_legal(move):
             return -500
