@@ -278,6 +278,7 @@ class StateEncoding():
         }
 
     def create_move_encoding(self, move):
+        self.update_board()
         assert isinstance(move, chess.Move)
         index = 0
         move_key = (
@@ -288,7 +289,7 @@ class StateEncoding():
         init_vector = [
             0 for x in range(64*73)
         ]
-        if move is None or move == chess.Move.null():
+        if move is None or move == chess.Move.null() or self.board.piece_at(move.from_square) is None:
             return init_vector
         if self.board.piece_at(move.from_square).piece_type == chess.KNIGHT \
                 or move.promotion is not None and move.promotion != chess.QUEEN:
