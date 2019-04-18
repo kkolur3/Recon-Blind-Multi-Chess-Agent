@@ -14,7 +14,7 @@ learning_rate = 0.001
 in_width = 8
 in_height = 8
 in_channel = 7
-num_outputs = 64 * 73
+num_outputs = 64 * 82
 
 # Placeholders
 sess = tf.InteractiveSession()
@@ -130,17 +130,17 @@ idx_to_piece = ["p", "n", "b", "r", "q", "k"]
 def create_episodes():
     state = my_agent.StateEncoding(chess.WHITE)
 
-    game_history_dir = "/Users/keshav/Documents/CS 4649/Recon-Blind-Multi-Chess-Agent/GameHistory"
+    game_history_dir = "C:/Users/Anuj/Documents/Georgia Institute of Technology/Senior Year/CS4649/Recon-Blind-Multi-Chess-Agent/GameHistory"
     episodes = []
     prevBoardDist = init_dist()
     curBoardDist = None
-    action_tensor = np.zeros(shape=(1, 64*73)) # chess.move from uci method that u pass in move string
+    action_tensor = np.zeros(shape=(1, 64*82)) # chess.move from uci method that u pass in move string
     hidden_stat = np.zeros((1, rnn_size))
     cell_stat = np.zeros((1, rnn_size))
     reward = 0.0
     # for filename in os.listdir(game_history_dir):
     #     if "game" in filename:
-    filename = "/Users/keshav/Documents/CS 4649/Recon-Blind-Multi-Chess-Agent/GameHistory/2019-04-08_17-12-41-617253game_boards.txt"
+    filename = "C:/Users/Anuj/Documents/Georgia Institute of Technology/Senior Year/CS4649/Recon-Blind-Multi-Chess-Agent/GameHistory/2019-04-08_17-12-41-617253game_boards.txt"
     whiteTurn = False
     senseTurn = False
     moveTurn = False
@@ -150,7 +150,7 @@ def create_episodes():
     move = None
     episode = []
 
-    next_action = np.zeros(shape=(1, 64*73))
+    next_action = np.zeros(shape=(1, 64*82))
     f_id = open(filename)
     for line in f_id:
         if "WHITE" in line:
