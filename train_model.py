@@ -194,6 +194,7 @@ def create_episodes():
                 move = "0000"
             uciMove = chess.Move.from_uci(move)
             action = state.create_move_encoding(uciMove)
+            state.update_state_with_move(uciMove, False, False)
             probs, hidden = forward_pass(prevBoardDist.reshape((1, 64, 7, 1)),
                                          np.array(action_tensor), hidden_stat, cell_stat)
             episode.append({"prevBoard": prevBoardDist, "action": action, "reward": reward,
