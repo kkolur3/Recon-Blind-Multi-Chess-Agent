@@ -183,7 +183,8 @@ def create_episodes():
                 line_counter = 7
 
         if whiteTurn and "Move" in line:
-            move = line[-5:-1]
+            moveIdx = line.find("taken:") + 7
+            move = line[moveIdx:-1]
             moveTurn = True
             whiteTurn = False
             print("Sense Loc " + senseLoc)
@@ -210,7 +211,7 @@ def create_episodes():
 
 
 def train_network(iterations):
-    episode = create_episodes()
+    episodes = create_episodes()
     for i in range(iterations):
         lo_sum = np.array([0.0])
         prevBoards = []
@@ -219,13 +220,14 @@ def train_network(iterations):
         curBoards = []
         hidden = []
         cell = []
-        for instances in episode:
-            prevBoards.append(instances["prevBoard"])
-            actions.append(instances["action"])
-            rewards.append(instances["reward"])
-            curBoards.append(instances["curBoard"])
-            hidden.append(instances["hidden"])
-            cell.append(instances["cell"])
+
+        for instances in episodes:
+            prevBoards.append(instances[0]["prevBoard"])
+            actions.append(instances[0]["action"])
+            rewards.append(instances[0]["reward"])
+            curBoards.append(instances[0]["curBoard"])
+            hidden.append(instances[0]["hidden"])
+            cell.append(instances[0]["cell"])
         initial_hidden = hidden[0]
         initial_cell = cell[0]
 
@@ -235,14 +237,15 @@ def train_network(iterations):
         final_hidden = hidden[-1]
         final_cell = hidden[-1]
 
-        probs, hidden = forward_pass(np.array(final_obs), np.array(final_action), final_cell, final_hidden)
+        probs, hidden = forward_pass(np.array(final_obs).reshape((1, 64, 7, 1)),
+                                     np.array(final_action).reshape((1, 64*82)), final_cell, final_hidden)
         q_value = final_reward + alpha * np.max(probs)
         lo, _ = sess.run([loss, train], feed_dict={board: np.array(curBoards),
                                                           actions: np.array(actions),
                                                           hidden_state: np.zeros(shape=(1, rnn_size)),
                                                           cell_state: np.zeros(shape=(1, rnn_size)),
                                                           q_val: np.array([q_value]),
-                                                          train_length: 10})
+                                                        train_length: 10})
         lo_sum += lo
     print("Loss: " + lo_sum)
 
