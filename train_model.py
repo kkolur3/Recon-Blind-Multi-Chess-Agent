@@ -130,7 +130,7 @@ idx_to_piece = ["p", "n", "b", "r", "q", "k"]
 def create_episodes():
     state = my_agent.StateEncoding(chess.WHITE)
 
-    game_history_dir = "C:/Users/Anuj/Documents/Georgia Institute of Technology/Senior Year/CS4649/Recon-Blind-Multi-Chess-Agent/GameHistory"
+    game_history_dir = "/Users/keshav/Documents/CS 4649/Recon-Blind-Multi-Chess-Agent/GameHistory"
     episodes = []
     prevBoardDist = init_dist()
     curBoardDist = None
@@ -140,7 +140,7 @@ def create_episodes():
     reward = 0.0
     # for filename in os.listdir(game_history_dir):
     #     if "game" in filename:
-    filename = "C:/Users/Anuj/Documents/Georgia Institute of Technology/Senior Year/CS4649/Recon-Blind-Multi-Chess-Agent/GameHistory/2019-04-08_17-12-41-617253game_boards.txt"
+    filename = "/Users/keshav/Documents/CS 4649/Recon-Blind-Multi-Chess-Agent/GameHistory/2019-04-08_17-12-41-617253game_boards.txt"
     whiteTurn = False
     senseTurn = False
     moveTurn = False
