@@ -153,6 +153,7 @@ def create_episodes():
         if "game" in filename:
             print("Training on " + filename)
             f_id = open(os.path.join(game_history_dir, filename))
+            state = StateEncoding(chess.WHITE)
             for line in f_id:
                 if "WHITE" in line:
                     whiteTurn = True
