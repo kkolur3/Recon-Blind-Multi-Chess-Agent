@@ -149,68 +149,79 @@ def create_episodes():
 
     next_action = np.zeros(shape=(1, 64*82))
     for filename in os.listdir(game_history_dir):
+        print(filename)
+        lineList = None
+        gameOverLine = None
         if "game" in filename:
-            episode = []
-            print("Training on " + filename)
             f_id = open(os.path.join(game_history_dir, filename))
-            state = StateEncoding(chess.WHITE)
-            for line in f_id:
-                if "WHITE" in line:
-                    whiteTurn = True
-                if whiteTurn and "Sense" in line:
-                    senseTurn = True
-                    senseLoc = line[-3:-1]
-                    line_counter = 7
-                if whiteTurn:
-                    boardState += (line + "\n")
-                lineSplit = line.split("|")
-                if whiteTurn and senseTurn and lineSplit[0].isdigit():
-                    row = int(lineSplit[0])
-                    for i in range(1, 9):
-                        piece = lineSplit[i].lower()
-                        if piece == " p " or piece == " n " or piece == " b " or piece == " r " or piece == " q " or piece == " k ":
-                            board_idx = (row - 1) * 8 + (i - 1)
-                            square_dist = np.zeros(7)
-                            if lineSplit[i].upper() == lineSplit[i]:
-                                square_dist[0] = 1
-                            else:
-                                square_dist[0] = -1
-                            piece_dist = piece_to_idx[piece]
-                            square_dist[piece_dist] = 1
-                            boardDist[board_idx] = square_dist
-                    line_counter -= 1
-                    if line_counter < 0 and whiteTurn and senseTurn and moveTurn:
-                        senseTurn = False
-                        moveTurn = False
+            lineList = f_id.readlines()
+            if len(lineList) > 2:
+                gameOverLine = lineList[len(lineList) - 2]
+                print(gameOverLine)
+        if lineList and gameOverLine:
+            if "game" in filename and "Game Over" in gameOverLine:
+                episode = []
+                print("Training on " + filename)
+                state = StateEncoding(chess.WHITE)
+                for line in lineList:
+                    if "WHITE" in line:
+                        whiteTurn = True
+                    if whiteTurn and "Sense" in line:
+                        senseTurn = True
+                        senseLoc = line[-3:-1]
                         line_counter = 7
+                    if whiteTurn:
+                        boardState += (line + "\n")
+                    lineSplit = line.split("|")
+                    if whiteTurn and senseTurn and lineSplit[0].isdigit():
+                        row = int(lineSplit[0])
+                        for i in range(1, 9):
+                            piece = lineSplit[i].lower()
+                            if piece == " p " or piece == " n " or piece == " b " or piece == " r " or piece == " q " or piece == " k ":
+                                board_idx = (row - 1) * 8 + (i - 1)
+                                square_dist = np.zeros(7)
+                                if lineSplit[i].upper() == lineSplit[i]:
+                                    square_dist[0] = 1
+                                else:
+                                    square_dist[0] = -1
+                                piece_dist = piece_to_idx[piece]
+                                square_dist[piece_dist] = 1
+                                boardDist[board_idx] = square_dist
+                        line_counter -= 1
+                        if line_counter < 0 and whiteTurn and senseTurn and moveTurn:
+                            senseTurn = False
+                            moveTurn = False
+                            line_counter = 7
 
-                if whiteTurn and "Move" in line:
-                    moveIdx = line.find("taken:") + 7
-                    move = line[moveIdx:-1]
-                    moveTurn = True
-                    whiteTurn = False
-                    print("Sense Loc " + senseLoc)
-                    print("Move: " + move)
-                    print(boardState)
-                    # print(boardDist)
-                    if move == "None":
-                        move = "0000"
-                    uciMove = chess.Move.from_uci(move)
-                    action = state.create_move_encoding(uciMove)
-                    state.update_state_with_move(uciMove, False, False)
-                    reward = state.compute_reward()
-                    probs, hidden = forward_pass(prevBoardDist.reshape((1, 64, 7, 1)),
-                                                 np.array(action_tensor), hidden_stat, cell_stat)
-                    episode.append({"prevBoard": prevBoardDist, "action": action, "reward": reward,
-                                     "curBoard": boardDist, "hidden": hidden.h, "cell": hidden.c})
-                    hidden_stat = hidden.h
-                    cell_stat = hidden.c
-                    action_tensor = next_action
-                    boardState = ""
-                    prevBoardDist = boardDist
-                    boardDist = np.zeros(shape=(64, 7))
-            if len(episode) > 0:
-                episodes.append(episode)
+                    if whiteTurn and "Move" in line:
+                        moveIdx = line.find("taken:") + 7
+                        move = line[moveIdx:-1]
+                        moveTurn = True
+                        whiteTurn = False
+                        # print("Sense Loc " + senseLoc)
+                        # print("Move: " + move)
+                        # print(boardState)
+                        # print(boardDist)
+                        if move == "None":
+                            move = "0000"
+                        uciMove = chess.Move.from_uci(move)
+                        action = state.create_move_encoding(uciMove)
+                        state.update_state_with_move(uciMove, False, False)
+                        reward = state.compute_reward()
+                        probs, hidden = forward_pass(prevBoardDist.reshape((1, 64, 7, 1)),
+                                                     np.array(action_tensor), hidden_stat, cell_stat)
+                        episode.append({"prevBoard": prevBoardDist, "action": action, "reward": reward,
+                                         "curBoard": boardDist, "hidden": hidden.h, "cell": hidden.c})
+                        hidden_stat = hidden.h
+                        cell_stat = hidden.c
+                        action_tensor = next_action
+                        boardState = ""
+                        prevBoardDist = boardDist
+                        boardDist = np.zeros(shape=(64, 7))
+                if len(episode) > 0:
+                    episodes.append(episode)
+                else:
+                    os.remove(os.path.join(game_history_dir, filename))
     return episodes
 
 
@@ -218,7 +229,6 @@ def train_network(iterations):
     saver = tf.train.Saver()
     saver.restore(sess, "model/prev_model.ckpt")
     episodes = create_episodes()
-
 
     for episode in episodes:
         for i in range(iterations):
