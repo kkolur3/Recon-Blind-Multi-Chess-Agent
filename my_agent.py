@@ -486,8 +486,9 @@ class StateEncoding:
     def update_state_after_opponent_move(self, capture, capture_square):
         # probability drift to uniform as the game progresses and the picture becomes cloudier
         if capture:
-            piece = self.board.piece_at(capture_square).piece_type
-            self.material_differential -= self.piece_values[piece]
+            piece = self.board.piece_at(capture_square)
+            if piece is not None:
+                self.material_differential -= self.piece_values[piece.piece_type]
             self.dists[capture_square] = [0, 0, 0, 0, 0, 0, 0]
         self.drift()
 
