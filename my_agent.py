@@ -13,7 +13,6 @@ import random
 import chess
 from player import Player
 import numpy as np
-import train_model
 
 # TODO: Rename this class to what you would like your bot to be named during the game.
 class MusicalChairs(Player):
@@ -113,10 +112,11 @@ class MusicalChairs(Player):
         """
         # TODO: update this method
         assert isinstance(self.board, chess.Board)
+        from train_model import make_move
         # choice = random.choice(possible_moves)
         # while not self.board.is_legal(choice):
         #     choice = random.choice(possible_moves)
-        choice = train_model.make_move(self.state, possible_moves)
+        choice = make_move(self.state, possible_moves)
         return choice
         
     def handle_move_result(self, requested_move, taken_move, reason, captured_piece, captured_square):
@@ -152,7 +152,7 @@ class MusicalChairs(Player):
         pass
 
 
-class StateEncoding():
+class StateEncoding:
     def __init__(self, color):
         self.color = color
         self.board = chess.Board()

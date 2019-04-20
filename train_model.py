@@ -2,7 +2,6 @@ import tensorflow as tf
 import numpy as np
 from tensorflow.python.ops import rnn, rnn_cell
 import os
-import my_agent
 import chess
 # from google.colab import files
 
@@ -130,7 +129,8 @@ idx_to_piece = ["p", "n", "b", "r", "q", "k"]
 
 
 def create_episodes():
-    state = my_agent.StateEncoding(chess.WHITE)
+    from my_agent import StateEncoding
+    state = StateEncoding(chess.WHITE)
 
     game_history_dir = os.getcwd() + "/GameHistory"
     episodes = []
@@ -140,7 +140,6 @@ def create_episodes():
     cell_stat = np.zeros((1, rnn_size))
     reward = 0.0
 
-    filename = "2019-04-08_17-12-41-617253game_boards.txt"
     whiteTurn = False
     senseTurn = False
     moveTurn = False
@@ -150,67 +149,71 @@ def create_episodes():
     episode = []
 
     next_action = np.zeros(shape=(1, 64*82))
-    f_id = open(os.path.join(game_history_dir, filename))
-    for line in f_id:
-        if "WHITE" in line:
-            whiteTurn = True
-        if whiteTurn and "Sense" in line:
-            senseTurn = True
-            senseLoc = line[-3:-1]
-            line_counter = 7
-        if whiteTurn:
-            boardState += (line + "\n")
-        lineSplit = line.split("|")
-        if whiteTurn and senseTurn and lineSplit[0].isdigit():
-            row = int(lineSplit[0])
-            for i in range(1, 9):
-                piece = lineSplit[i].lower()
-                if piece == " p " or piece == " n " or piece == " b " or piece == " r " or piece == " q " or piece == " k ":
-                    board_idx = (row - 1) * 8 + (i - 1)
-                    square_dist = np.zeros(7)
-                    if lineSplit[i].upper() == lineSplit[i]:
-                        square_dist[0] = 1
-                    else:
-                        square_dist[0] = -1
-                    piece_dist = piece_to_idx[piece]
-                    square_dist[piece_dist] = 1
-                    boardDist[board_idx] = square_dist
-            line_counter -= 1
-            if line_counter < 0 and whiteTurn and senseTurn and moveTurn:
-                senseTurn = False
-                moveTurn = False
-                line_counter = 7
+    for filename in os.listdir(game_history_dir):
+        if "game" in filename:
+            print("Training on " + filename)
+            f_id = open(os.path.join(game_history_dir, filename))
+            for line in f_id:
+                if "WHITE" in line:
+                    whiteTurn = True
+                if whiteTurn and "Sense" in line:
+                    senseTurn = True
+                    senseLoc = line[-3:-1]
+                    line_counter = 7
+                if whiteTurn:
+                    boardState += (line + "\n")
+                lineSplit = line.split("|")
+                if whiteTurn and senseTurn and lineSplit[0].isdigit():
+                    row = int(lineSplit[0])
+                    for i in range(1, 9):
+                        piece = lineSplit[i].lower()
+                        if piece == " p " or piece == " n " or piece == " b " or piece == " r " or piece == " q " or piece == " k ":
+                            board_idx = (row - 1) * 8 + (i - 1)
+                            square_dist = np.zeros(7)
+                            if lineSplit[i].upper() == lineSplit[i]:
+                                square_dist[0] = 1
+                            else:
+                                square_dist[0] = -1
+                            piece_dist = piece_to_idx[piece]
+                            square_dist[piece_dist] = 1
+                            boardDist[board_idx] = square_dist
+                    line_counter -= 1
+                    if line_counter < 0 and whiteTurn and senseTurn and moveTurn:
+                        senseTurn = False
+                        moveTurn = False
+                        line_counter = 7
 
-        if whiteTurn and "Move" in line:
-            moveIdx = line.find("taken:") + 7
-            move = line[moveIdx:-1]
-            moveTurn = True
-            whiteTurn = False
-            print("Sense Loc " + senseLoc)
-            print("Move: " + move)
-            print(boardState)
-            # print(boardDist)
-            if move == "None":
-                move = "0000"
-            uciMove = chess.Move.from_uci(move)
-            action = state.create_move_encoding(uciMove)
-            state.update_state_with_move(uciMove, False, False)
-            reward = state.compute_reward()
-            probs, hidden = forward_pass(prevBoardDist.reshape((1, 64, 7, 1)),
-                                         np.array(action_tensor), hidden_stat, cell_stat)
-            episode.append({"prevBoard": prevBoardDist, "action": action, "reward": reward,
-                             "curBoard": boardDist, "hidden": hidden.h, "cell": hidden.c})
-            hidden_stat = hidden.h
-            cell_stat = hidden.c
-            action_tensor = next_action
-            boardState = ""
-            prevBoardDist = boardDist
-            boardDist = np.zeros(shape=(64, 7))
-    episodes.append(episode)
+                if whiteTurn and "Move" in line:
+                    moveIdx = line.find("taken:") + 7
+                    move = line[moveIdx:-1]
+                    moveTurn = True
+                    whiteTurn = False
+                    print("Sense Loc " + senseLoc)
+                    print("Move: " + move)
+                    print(boardState)
+                    # print(boardDist)
+                    if move == "None":
+                        move = "0000"
+                    uciMove = chess.Move.from_uci(move)
+                    action = state.create_move_encoding(uciMove)
+                    state.update_state_with_move(uciMove, False, False)
+                    reward = state.compute_reward()
+                    probs, hidden = forward_pass(prevBoardDist.reshape((1, 64, 7, 1)),
+                                                 np.array(action_tensor), hidden_stat, cell_stat)
+                    episode.append({"prevBoard": prevBoardDist, "action": action, "reward": reward,
+                                     "curBoard": boardDist, "hidden": hidden.h, "cell": hidden.c})
+                    hidden_stat = hidden.h
+                    cell_stat = hidden.c
+                    action_tensor = next_action
+                    boardState = ""
+                    prevBoardDist = boardDist
+                    boardDist = np.zeros(shape=(64, 7))
+            episodes.append(episode)
     return episodes
 
 
 def train_network(iterations):
+    tf.reset_default_graph()
     episodes = create_episodes()
     for i in range(iterations):
         lo_sum = np.array([0.0])
@@ -221,13 +224,13 @@ def train_network(iterations):
         hidden = []
         cell = []
 
-        for instances in episodes:
-            prevBoards.append(instances[0]["prevBoard"])
-            moves.append(instances[0]["action"])
-            rewards.append(instances[0]["reward"])
-            curBoards.append(instances[0]["curBoard"])
-            hidden.append(instances[0]["hidden"])
-            cell.append(instances[0]["cell"])
+        for episode in episodes:
+            prevBoards.append(episode["prevBoard"])
+            moves.append(episode[0]["action"])
+            rewards.append(episode[0]["reward"])
+            curBoards.append(episode[0]["curBoard"])
+            hidden.append(episode[0]["hidden"])
+            cell.append(episode[0]["cell"])
         initial_hidden = hidden[0]
         initial_cell = cell[0]
 
@@ -269,7 +272,7 @@ def make_move(state, possible_moves):
     for move in possible_moves:
         action = np.array(state.create_move_encoding(move)).reshape(1, 5248)
         probs, hidden = forward_pass(boardDist, action, observedBoard, beliefBoard)
-
+        state_out = [hidden.c[:1, :], hidden.h[:1, :]]
         current_reward = state.compute_reward()
         action_reward = state.compute_move_reward_change(move)
         q_action = action_reward + current_reward + alpha * np.max(probs)
@@ -281,3 +284,4 @@ def make_move(state, possible_moves):
     return best_move
 
 
+train_network(100)
