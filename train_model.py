@@ -3,6 +3,7 @@ import numpy as np
 from tensorflow.python.ops import rnn, rnn_cell
 import os
 import chess
+import pickle
 # from google.colab import files
 
 rnn_size = 128
@@ -133,7 +134,8 @@ def create_episodes():
     state = StateEncoding(chess.WHITE)
 
     game_history_dir = os.getcwd() + "/GameHistory"
-    episodes = []
+    with (open("episodes.pkl", "rb")) as f:
+        episodes = pickle.load(f)
     prevBoardDist = init_dist()
     action_tensor = np.zeros(shape=(1, 64*82)) # chess.move from uci method that u pass in move string
     hidden_stat = np.zeros((1, rnn_size))
@@ -149,13 +151,14 @@ def create_episodes():
 
     next_action = np.zeros(shape=(1, 64*82))
     for filename in os.listdir(game_history_dir):
-        print(filename)
+        # print(filename)
         lineList = None
         gameOverLine = None
-        if "game" in filename:
+        if "game" in filename and filename not in episodes.keys():
             f_id = open(os.path.join(game_history_dir, filename))
             lineList = f_id.readlines()
             if len(lineList) > 2:
+                print("new game!" + filename + "being added")
                 gameOverLine = lineList[len(lineList) - 2]
                 print(gameOverLine)
         if lineList and gameOverLine:
@@ -219,18 +222,23 @@ def create_episodes():
                         prevBoardDist = boardDist
                         boardDist = np.zeros(shape=(64, 7))
                 if len(episode) > 0:
-                    episodes.append(episode)
+                    episodes[filename] = episode
                 else:
                     os.remove(os.path.join(game_history_dir, filename))
-    return episodes
+    f = open("episodes.pkl", "wb")
+    pickle.dump(episodes, f)
+    f.close()
+    # return episodes
 
 
 def train_network(iterations):
     saver = tf.train.Saver()
     saver.restore(sess, "model/prev_model.ckpt")
-    episodes = create_episodes()
-
+    with (open("episodes.pkl", "rb")) as f:
+        episodes = pickle.load(f)
+    print(type(episodes))
     for episode in episodes:
+        print(episode)
         for i in range(iterations):
             lo_sum = np.array([0.0])
 
@@ -240,7 +248,7 @@ def train_network(iterations):
             curBoards = []
             hidden = []
             cell = []
-            for turn in episode:
+            for turn in episodes[episode]:
                 prevBoards.append(turn["prevBoard"])
                 moves.append(turn["action"])
                 rewards.append(turn["reward"])
@@ -259,7 +267,7 @@ def train_network(iterations):
             probs, hidden = forward_pass(np.array(final_obs).reshape((1, 64, 7, 1)),
                                          np.array(final_move).reshape((1, 64*82)), final_cell, final_hidden)
             q_value = final_reward + alpha * np.max(probs)
-            num_turns = len(episode)
+            num_turns = len(episodes[episode])
 
             lo, _ = sess.run([loss, train], feed_dict={board: np.array(curBoards).reshape((num_turns, 64, 7, 1)),
                                                               actions: np.array(moves),
@@ -289,7 +297,7 @@ def make_move(state, possible_moves):
     observedBoard = np.zeros((1, rnn_size))
     beliefBoard = np.zeros((1, rnn_size)) #state.dists
     for move in possible_moves:
-        print(move.uci())
+        # print(move.uci())
         action = np.array(state.create_move_encoding(move)).reshape(1, 5248)
         probs, hidden = forward_pass(boardDist, action, observedBoard, beliefBoard)
         state_out = [hidden.c[:1, :], hidden.h[:1, :]]
@@ -303,4 +311,5 @@ def make_move(state, possible_moves):
         observedBoard = hidden.h
     return best_move
 
-train_network(100)
+# create_episodes()
+# train_network(100)
