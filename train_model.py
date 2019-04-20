@@ -68,7 +68,7 @@ action_board_fc2 = tf.add(tf.matmul(concatenate, combined_action_board_weights),
 
 # Run through RNN
 flattened = tf.contrib.slim.flatten(action_board_fc2)
-convFlat = tf.nn.tanh(tf.reshape(flattened, [1, 1, rnn_size]))
+convFlat = tf.nn.tanh(tf.reshape(flattened, [1, train_length, rnn_size]))
 # convFlat = tf.nn.tanh(tf.reshape(flattened, [1, train_length, rnn_size]))
 lstm_cell = rnn_cell.BasicLSTMCell(rnn_size)
 outputs, states = tf.nn.dynamic_rnn(lstm_cell, convFlat, dtype="float32",
@@ -146,11 +146,11 @@ def create_episodes():
     boardState = ""
     boardDist = np.zeros(shape=(64, 7))
     senseLoc = None
-    episode = []
 
     next_action = np.zeros(shape=(1, 64*82))
     for filename in os.listdir(game_history_dir):
         if "game" in filename:
+            episode = []
             print("Training on " + filename)
             f_id = open(os.path.join(game_history_dir, filename))
             state = StateEncoding(chess.WHITE)
@@ -209,7 +209,8 @@ def create_episodes():
                     boardState = ""
                     prevBoardDist = boardDist
                     boardDist = np.zeros(shape=(64, 7))
-            episodes.append(episode)
+            if len(episode) > 0:
+                episodes.append(episode)
     return episodes
 
 
@@ -217,24 +218,27 @@ def train_network(iterations):
     saver = tf.train.Saver()
     saver.restore(sess, "model/prev_model.ckpt")
     episodes = create_episodes()
-    for i in range(iterations):
-        lo_sum = np.array([0.0])
-        prevBoards = []
-        moves = []
-        rewards = []
-        curBoards = []
-        hidden = []
-        cell = []
 
-        for episode in episodes:
-            prevBoards.append(episode["prevBoard"])
-            moves.append(episode["action"])
-            rewards.append(episode["reward"])
-            curBoards.append(episode["curBoard"])
-            hidden.append(episode["hidden"])
-            cell.append(episode["cell"])
-            initial_hidden = hidden[0]
-            initial_cell = cell[0]
+
+    for episode in episodes:
+        for i in range(iterations):
+            lo_sum = np.array([0.0])
+
+            prevBoards = []
+            moves = []
+            rewards = []
+            curBoards = []
+            hidden = []
+            cell = []
+            for turn in episode:
+                prevBoards.append(turn["prevBoard"])
+                moves.append(turn["action"])
+                rewards.append(turn["reward"])
+                curBoards.append(turn["curBoard"])
+                hidden.append(turn["hidden"])
+                cell.append(turn["cell"])
+                initial_hidden = hidden[0]
+                initial_cell = cell[0]
 
             final_obs = curBoards[-1]
             final_move = moves[-1]
@@ -245,13 +249,16 @@ def train_network(iterations):
             probs, hidden = forward_pass(np.array(final_obs).reshape((1, 64, 7, 1)),
                                          np.array(final_move).reshape((1, 64*82)), final_cell, final_hidden)
             q_value = final_reward + alpha * np.max(probs)
-            lo, _ = sess.run([loss, train], feed_dict={board: np.array(curBoards).reshape((1, 64, 7, 1)),
+            num_turns = len(episode)
+
+            lo, _ = sess.run([loss, train], feed_dict={board: np.array(curBoards).reshape((num_turns, 64, 7, 1)),
                                                               actions: np.array(moves),
                                                               hidden_state: initial_hidden,
                                                               cell_state: initial_cell,
                                                               q_val: np.array([q_value]),
-                                                              train_length: 10})
+                                                              train_length: num_turns})
             lo_sum += lo
+
     saver.save(sess, "model/prev_model.ckpt")
     # files.download("model/prev_model.ckpt.meta")
     print("Loss: %d" % lo_sum)
@@ -286,4 +293,4 @@ def make_move(state, possible_moves):
     return best_move
 
 
-train_network(100)
+#train_network(100)
