@@ -13,7 +13,7 @@ import random
 import chess
 from player import Player
 import numpy as np
-
+import train_model
 
 # TODO: Rename this class to what you would like your bot to be named during the game.
 class MusicalChairs(Player):
@@ -113,9 +113,10 @@ class MusicalChairs(Player):
         """
         # TODO: update this method
         assert isinstance(self.board, chess.Board)
-        choice = random.choice(possible_moves)
-        while not self.board.is_legal(choice):
-            choice = random.choice(possible_moves)
+        # choice = random.choice(possible_moves)
+        # while not self.board.is_legal(choice):
+        #     choice = random.choice(possible_moves)
+        choice = train_model.make_move(self.state, possible_moves)
         return choice
         
     def handle_move_result(self, requested_move, taken_move, reason, captured_piece, captured_square):
@@ -134,8 +135,8 @@ class MusicalChairs(Player):
         if captured_piece:
             self.board.remove_piece_at(captured_square)
         self.board.push(taken_move if taken_move is not None else chess.Move.null())
-        print(self.board)
-        print("==================================================================================")
+        # print(self.board)
+        # print("==================================================================================")
         self.state.update_state_with_move(taken_move, captured_piece, captured_square)
 
         pass
@@ -312,7 +313,7 @@ class StateEncoding():
             if unit_vector != (0,0):
                 index = 7 * self.unit_moves[unit_vector] + king_steps - 1
 
-        print(index)
+        # print(index)
         init_vector[move.from_square * 73 + index] = 1
         return init_vector
 
@@ -362,7 +363,7 @@ class StateEncoding():
         return self.dists[square] == [0, 0, 0, 0, 0, 0, 0]
 
     def update_board(self, threshold=0.8):
-        print(self.board)
+        # print(self.board)
         self.board.clear()
         for square_index in range(64):
             square = self.dists[square_index]
@@ -385,10 +386,10 @@ class StateEncoding():
                 self.board.remove_piece_at(square_index)
             else:
                 self.board.set_piece_at(square_index, chess.Piece(piece, color))
-        print("============  Before probability update  =============================================")
-        print(self.board)
-        self.board.turn = self.color
-        print("============   After probability update  =============================================")
+        # print("============  Before probability update  =============================================")
+        # print(self.board)
+        # self.board.turn = self.color
+        # print("============   After probability update  =============================================")
 
     def compute_reward(self):
         reward = self.material_differential
@@ -436,7 +437,7 @@ class StateEncoding():
         opp_state.dists = self.dists
         opp_state.board.turn = opp_state.color
         opp_state.update_board(threshold=0.0)
-        print(opp_state.board.legal_moves)
+        # print(opp_state.board.legal_moves)
         for move in opp_state.board.legal_moves:
             assert isinstance(move, chess.Move)
             reward_diff = opp_state.compute_move_reward_change(move)
@@ -445,7 +446,7 @@ class StateEncoding():
                 continue
             else:
                 self.dists[end_square] = initial_vector
-            print(reward_diff)
+            # print(reward_diff)
             prob_delta = (0.5 + (reward_diff/10)) / opp_state.board.legal_moves.count()
             piece = self.board.piece_at(move.from_square).piece_type
             self.dists[move.from_square][piece] -= prob_delta
@@ -478,7 +479,7 @@ class StateEncoding():
                     self.dists[square][piece] = 0
                 elif self.dists[square][piece] == float('inf') or self.dists[square][piece] > 1:
                     self.dists[square][piece] = 1
-        print(self.dists)
+        # print(self.dists)
 
     def update_state_after_opponent_move(self, capture, capture_square):
         # probability drift to uniform as the game progresses and the picture becomes cloudier
@@ -512,7 +513,7 @@ class StateEncoding():
         dist_copy = np.copy(dist)
         for square in dist_copy:
             square[0] = self.color if square[0] == 1 else not self.color
-        self.dists = dist_copy
+        # self.dists = dist_copy
 
 
 
@@ -521,10 +522,10 @@ class StateEncoding():
 
 if __name__ == '__main__':
     state = StateEncoding(chess.WHITE)
-    print(state.create_move_encoding(chess.Move.from_uci("e2e4")))
-    print(state.create_move_encoding(chess.Move.from_uci("g1f3")))
-    print(state.create_move_encoding(chess.Move.from_uci("b1c3")))
-    print(state.create_move_encoding(chess.Move.from_uci("c1f4")))
-    print(state.create_move_encoding(chess.Move.from_uci("a7a8q")))
-    print(state.create_move_encoding(chess.Move.from_uci("a7a8b")))
-    print(state.create_move_from_encoding(state.create_move_encoding(chess.Move.from_uci("e2e4"))))
+    # print(state.create_move_encoding(chess.Move.from_uci("e2e4")))
+    # print(state.create_move_encoding(chess.Move.from_uci("g1f3")))
+    # print(state.create_move_encoding(chess.Move.from_uci("b1c3")))
+    # print(state.create_move_encoding(chess.Move.from_uci("c1f4")))
+    # print(state.create_move_encoding(chess.Move.from_uci("a7a8q")))
+    # print(state.create_move_encoding(chess.Move.from_uci("a7a8b")))
+    # print(state.create_move_from_encoding(state.create_move_encoding(chess.Move.from_uci("e2e4"))))

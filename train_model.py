@@ -4,6 +4,7 @@ from tensorflow.python.ops import rnn, rnn_cell
 import os
 import my_agent
 import chess
+# from google.colab import files
 
 rnn_size = 128
 discount_factor = 0.9
@@ -68,7 +69,8 @@ action_board_fc2 = tf.add(tf.matmul(concatenate, combined_action_board_weights),
 
 # Run through RNN
 flattened = tf.contrib.slim.flatten(action_board_fc2)
-convFlat = tf.nn.tanh(tf.reshape(flattened, [1, train_length, rnn_size]))
+convFlat = tf.nn.tanh(tf.reshape(flattened, [1, 1, rnn_size]))
+# convFlat = tf.nn.tanh(tf.reshape(flattened, [1, train_length, rnn_size]))
 lstm_cell = rnn_cell.BasicLSTMCell(rnn_size)
 outputs, states = tf.nn.dynamic_rnn(lstm_cell, convFlat, dtype="float32",
                                     initial_state=(rnn_cell.LSTMStateTuple(hidden_state, cell_state)))
@@ -130,28 +132,25 @@ idx_to_piece = ["p", "n", "b", "r", "q", "k"]
 def create_episodes():
     state = my_agent.StateEncoding(chess.WHITE)
 
-    game_history_dir = "/Users/keshav/Documents/CS 4649/Recon-Blind-Multi-Chess-Agent/GameHistory"
+    game_history_dir = os.getcwd() + "/GameHistory"
     episodes = []
     prevBoardDist = init_dist()
-    curBoardDist = None
     action_tensor = np.zeros(shape=(1, 64*82)) # chess.move from uci method that u pass in move string
     hidden_stat = np.zeros((1, rnn_size))
     cell_stat = np.zeros((1, rnn_size))
     reward = 0.0
-    # for filename in os.listdir(game_history_dir):
-    #     if "game" in filename:
-    filename = "/Users/keshav/Documents/CS 4649/Recon-Blind-Multi-Chess-Agent/GameHistory/2019-04-08_17-12-41-617253game_boards.txt"
+
+    filename = "2019-04-08_17-12-41-617253game_boards.txt"
     whiteTurn = False
     senseTurn = False
     moveTurn = False
     boardState = ""
     boardDist = np.zeros(shape=(64, 7))
     senseLoc = None
-    move = None
     episode = []
 
     next_action = np.zeros(shape=(1, 64*82))
-    f_id = open(filename)
+    f_id = open(os.path.join(game_history_dir, filename))
     for line in f_id:
         if "WHITE" in line:
             whiteTurn = True
@@ -196,6 +195,7 @@ def create_episodes():
             uciMove = chess.Move.from_uci(move)
             action = state.create_move_encoding(uciMove)
             state.update_state_with_move(uciMove, False, False)
+            reward = state.compute_reward()
             probs, hidden = forward_pass(prevBoardDist.reshape((1, 64, 7, 1)),
                                          np.array(action_tensor), hidden_stat, cell_stat)
             episode.append({"prevBoard": prevBoardDist, "action": action, "reward": reward,
@@ -215,7 +215,7 @@ def train_network(iterations):
     for i in range(iterations):
         lo_sum = np.array([0.0])
         prevBoards = []
-        actions = []
+        moves = []
         rewards = []
         curBoards = []
         hidden = []
@@ -223,7 +223,7 @@ def train_network(iterations):
 
         for instances in episodes:
             prevBoards.append(instances[0]["prevBoard"])
-            actions.append(instances[0]["action"])
+            moves.append(instances[0]["action"])
             rewards.append(instances[0]["reward"])
             curBoards.append(instances[0]["curBoard"])
             hidden.append(instances[0]["hidden"])
@@ -232,23 +232,24 @@ def train_network(iterations):
         initial_cell = cell[0]
 
         final_obs = curBoards[-1]
-        final_action = actions[-1]
+        final_move = moves[-1]
         final_reward = rewards[-1]
         final_hidden = hidden[-1]
         final_cell = hidden[-1]
 
         probs, hidden = forward_pass(np.array(final_obs).reshape((1, 64, 7, 1)),
-                                     np.array(final_action).reshape((1, 64*82)), final_cell, final_hidden)
+                                     np.array(final_move).reshape((1, 64*82)), final_cell, final_hidden)
         q_value = final_reward + alpha * np.max(probs)
-        lo, _ = sess.run([loss, train], feed_dict={board: np.array(curBoards),
-                                                          actions: np.array(actions),
+        lo, _ = sess.run([loss, train], feed_dict={board: np.array(curBoards).reshape((1, 64, 7, 1)),
+                                                          actions: np.array(moves),
                                                           hidden_state: np.zeros(shape=(1, rnn_size)),
                                                           cell_state: np.zeros(shape=(1, rnn_size)),
                                                           q_val: np.array([q_value]),
-                                                        train_length: 10})
+                                                          train_length: 10})
         lo_sum += lo
-    print("Loss: " + lo_sum)
-
+    saver.save(sess, "model/prev_model.ckpt")
+    # files.download("model/prev_model.ckpt.meta")
+    print("Loss: %d" % lo_sum)
 
 letter_to_row = {"a": 0, "b": 1, "c": 2, "d": 3, "e": 4, "f": 5, "g": 6, "h": 7}
 
@@ -256,5 +257,27 @@ letter_to_row = {"a": 0, "b": 1, "c": 2, "d": 3, "e": 4, "f": 5, "g": 6, "h": 7}
 def convertLocToSqIdx(senseLoc):
     return (int(senseLoc[1]) - 1) * 8 + (letter_to_row[senseLoc[0]])
 
-train_network(100)
+
+def make_move(state, possible_moves):
+    boardDist = state.export().reshape(1, 64, 7, 1)
+    saver = tf.train.Saver()
+    saver.restore(sess, "model/prev_model.ckpt")
+    max_q = -float("inf")
+    best_move = None
+    observedBoard = np.zeros((1, rnn_size))
+    beliefBoard = np.zeros((1, rnn_size)) #state.dists
+    for move in possible_moves:
+        action = np.array(state.create_move_encoding(move)).reshape(1, 5248)
+        probs, hidden = forward_pass(boardDist, action, observedBoard, beliefBoard)
+
+        current_reward = state.compute_reward()
+        action_reward = state.compute_move_reward_change(move)
+        q_action = action_reward + current_reward + alpha * np.max(probs)
+        if q_action > max_q:
+            best_move = move
+            max_q = q_action
+        beliefBoard = hidden.c
+        observedBoard = hidden.h
+    return best_move
+
 
