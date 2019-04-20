@@ -391,24 +391,26 @@ class StateEncoding():
         # self.board.turn = self.color
         # print("============   After probability update  =============================================")
 
-    def compute_reward(self):
+    def compute_reward(self, update=True):
         reward = self.material_differential
-        self.update_board()
+        if update:
+            self.update_board()
         for x in range(64):
             piece = self.board.piece_at(x)
             if piece is not None and piece.color == self.color:
                 reward += self.reward_map[piece.piece_type][x]
         return reward - 1
 
-    def compute_move_reward_change(self, move):
+    def compute_move_reward_change(self, move, update=True):
         assert isinstance(move, chess.Move)
-        self.update_board()
-        piece_moved = self.board.piece_at(move.from_square).piece_type
-        if not self.board.is_legal(move):
+        if update:
+            self.update_board()
+        piece_moved = self.board.piece_at(move.from_square)
+        if not self.board.is_legal(move) or piece_moved is None:
             return -500
         else:
             return \
-                self.reward_map[piece_moved][move.to_square] - self.reward_map[piece_moved][move.from_square]
+                self.reward_map[piece_moved.piece_type][move.to_square] - self.reward_map[piece_moved.piece_type][move.from_square]
 
     def update_state_with_move(self, move, captured_piece, captured_square):
         if move is not None:
@@ -440,7 +442,7 @@ class StateEncoding():
         # print(opp_state.board.legal_moves)
         for move in opp_state.board.legal_moves:
             assert isinstance(move, chess.Move)
-            reward_diff = opp_state.compute_move_reward_change(move)
+            reward_diff = opp_state.compute_move_reward_change(move, update=False)
             end_square = move.to_square
             if not self.is_empty(end_square) and self.dists[end_square][0] == self.color:
                 continue
