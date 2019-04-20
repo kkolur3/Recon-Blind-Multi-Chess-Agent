@@ -213,7 +213,8 @@ def create_episodes():
 
 
 def train_network(iterations):
-    tf.reset_default_graph()
+    saver = tf.train.Saver()
+    saver.restore(sess, "model/prev_model.ckpt")
     episodes = create_episodes()
     for i in range(iterations):
         lo_sum = np.array([0.0])
@@ -226,30 +227,30 @@ def train_network(iterations):
 
         for episode in episodes:
             prevBoards.append(episode["prevBoard"])
-            moves.append(episode[0]["action"])
-            rewards.append(episode[0]["reward"])
-            curBoards.append(episode[0]["curBoard"])
-            hidden.append(episode[0]["hidden"])
-            cell.append(episode[0]["cell"])
-        initial_hidden = hidden[0]
-        initial_cell = cell[0]
+            moves.append(episode["action"])
+            rewards.append(episode["reward"])
+            curBoards.append(episode["curBoard"])
+            hidden.append(episode["hidden"])
+            cell.append(episode["cell"])
+            initial_hidden = hidden[0]
+            initial_cell = cell[0]
 
-        final_obs = curBoards[-1]
-        final_move = moves[-1]
-        final_reward = rewards[-1]
-        final_hidden = hidden[-1]
-        final_cell = hidden[-1]
+            final_obs = curBoards[-1]
+            final_move = moves[-1]
+            final_reward = rewards[-1]
+            final_hidden = hidden[-1]
+            final_cell = hidden[-1]
 
-        probs, hidden = forward_pass(np.array(final_obs).reshape((1, 64, 7, 1)),
-                                     np.array(final_move).reshape((1, 64*82)), final_cell, final_hidden)
-        q_value = final_reward + alpha * np.max(probs)
-        lo, _ = sess.run([loss, train], feed_dict={board: np.array(curBoards).reshape((1, 64, 7, 1)),
-                                                          actions: np.array(moves),
-                                                          hidden_state: np.zeros(shape=(1, rnn_size)),
-                                                          cell_state: np.zeros(shape=(1, rnn_size)),
-                                                          q_val: np.array([q_value]),
-                                                          train_length: 10})
-        lo_sum += lo
+            probs, hidden = forward_pass(np.array(final_obs).reshape((1, 64, 7, 1)),
+                                         np.array(final_move).reshape((1, 64*82)), final_cell, final_hidden)
+            q_value = final_reward + alpha * np.max(probs)
+            lo, _ = sess.run([loss, train], feed_dict={board: np.array(curBoards).reshape((1, 64, 7, 1)),
+                                                              actions: np.array(moves),
+                                                              hidden_state: initial_hidden,
+                                                              cell_state: initial_cell,
+                                                              q_val: np.array([q_value]),
+                                                              train_length: 10})
+            lo_sum += lo
     saver.save(sess, "model/prev_model.ckpt")
     # files.download("model/prev_model.ckpt.meta")
     print("Loss: %d" % lo_sum)
