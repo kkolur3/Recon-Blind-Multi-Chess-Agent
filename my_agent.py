@@ -32,6 +32,7 @@ class MusicalChairs(Player):
         self.board = board
         self.state = StateEncoding(color)
         self.color = color
+        self.time = 600
         if color == chess.WHITE:
             self.board.set_fen("8/8/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
         else:
@@ -154,6 +155,7 @@ class MusicalChairs(Player):
 
 class StateEncoding:
     def __init__(self, color):
+        self.time_remaining = 600
         self.color = color
         self.board = chess.Board()
         self.reward_map = {
@@ -406,11 +408,17 @@ class StateEncoding:
         if update:
             self.update_board()
         piece_moved = self.board.piece_at(move.from_square)
+        expected_material_differential = 0
         if not self.board.is_legal(move) or piece_moved is None:
             return -500
         else:
+            square_dist = self.dists[move.to_square]
+            for x in range(1, 7):
+                expected_material_differential += square_dist[x] * self.piece_values[x]
             return \
-                self.reward_map[piece_moved.piece_type][move.to_square] - self.reward_map[piece_moved.piece_type][move.from_square]
+                self.reward_map[piece_moved.piece_type][move.to_square] \
+                - self.reward_map[piece_moved.piece_type][move.from_square] + expected_material_differential
+
 
     def update_state_with_move(self, move, captured_piece, captured_square):
         if move is not None:
@@ -422,6 +430,7 @@ class StateEncoding:
                 if piece == chess.PAWN \
                         and (chess.square_rank(move.to_square) == 7 or chess.square_rank(move.to_square) == 0):
                     piece = chess.QUEEN if move.promotion is None else move.promotion
+                    self.material_differential += self.piece_values[piece]
                 move_vector[piece] = 1
                 self.dists[move.to_square] = move_vector
                 if captured_piece:

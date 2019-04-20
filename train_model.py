@@ -289,6 +289,7 @@ def make_move(state, possible_moves):
     observedBoard = np.zeros((1, rnn_size))
     beliefBoard = np.zeros((1, rnn_size)) #state.dists
     for move in possible_moves:
+        print(move.uci())
         action = np.array(state.create_move_encoding(move)).reshape(1, 5248)
         probs, hidden = forward_pass(boardDist, action, observedBoard, beliefBoard)
         state_out = [hidden.c[:1, :], hidden.h[:1, :]]
@@ -302,7 +303,4 @@ def make_move(state, possible_moves):
         observedBoard = hidden.h
     return best_move
 
-
 train_network(100)
-
-# create_training_data()
