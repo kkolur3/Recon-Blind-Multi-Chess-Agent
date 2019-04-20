@@ -288,6 +288,7 @@ class StateEncoding:
             (0,-1): 6,
             (1,-1):7
         }
+        print(self.board)
 
     def create_move_encoding(self, move):
         self.update_board()
@@ -412,15 +413,16 @@ class StateEncoding:
         if not self.board.is_legal(move) or piece_moved is None:
             return -500
         else:
-            # square_dist = self.dists[move.to_square]
-            # for x in range(1, 7):
-            #     expected_material_differential += square_dist[x] * self.piece_values[x]
-            # return \
-            #     self.reward_map[piece_moved.piece_type][move.to_square] \
-            #     - self.reward_map[piece_moved.piece_type][move.from_square] + expected_material_differential
-            return self.reward_map[piece_moved.piece_type][move.to_square] \
-            - self.reward_map[piece_moved.piece_type][move.from_square]
 
+            square_dist = self.dists[move.to_square]
+            for x in range(1, 7):
+                expected_material_differential += square_dist[x] * self.piece_values[x]
+            if move.promotion is not None:
+                expected_material_differential += self.piece_values[x] + self.reward_map[x][move.to_square]
+            return \
+                self.reward_map[piece_moved.piece_type][move.to_square] \
+                - self.reward_map[piece_moved.piece_type][move.from_square] + expected_material_differential
+        
     def update_state_with_move(self, move, captured_piece, captured_square):
         if move is not None:
             piece = self.board.piece_at(move.from_square)
@@ -429,7 +431,8 @@ class StateEncoding:
                 self.dists[move.from_square] = [0, 0, 0, 0, 0, 0, 0]
                 move_vector = [self.color, 0, 0, 0, 0, 0, 0]
                 if piece == chess.PAWN \
-                        and (chess.square_rank(move.to_square) == 7 or chess.square_rank(move.to_square) == 0):
+                        and (chess.square_rank(move.to_square) == chess.BB_RANK_8
+                             or chess.square_rank(move.to_square) == chess.BB_RANK_1):
                     piece = chess.QUEEN if move.promotion is None else move.promotion
                     # self.material_differential += self.piece_values[piece]
                 move_vector[piece] = 1
@@ -445,8 +448,7 @@ class StateEncoding:
     def drift(self):
         initial_vector = [not self.color, 0, 0, 0, 0, 0, 0]
         opp_state = StateEncoding(not self.color)
-        opp_state.board = self.board
-        opp_state.dists = self.dists
+        opp_state.import_dist(self.export())
         opp_state.board.turn = opp_state.color
         opp_state.update_board(threshold=0.0)
         # print(opp_state.board.legal_moves)
@@ -460,7 +462,7 @@ class StateEncoding:
                 self.dists[end_square] = initial_vector
             # print(reward_diff)
             prob_delta = (0.5 + (reward_diff/10)) / opp_state.board.legal_moves.count()
-            piece = self.board.piece_at(move.from_square).piece_type
+            piece = opp_state.board.piece_at(move.from_square).piece_type
             self.dists[move.from_square][piece] -= prob_delta
             if self.dists[move.from_square][piece] < 0:
                 self.dists[move.from_square][piece] = 0
