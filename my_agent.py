@@ -15,7 +15,7 @@ from player import Player
 import numpy as np
 
 # TODO: Rename this class to what you would like your bot to be named during the game.
-class MusicalChairs(Player):
+class KnightFall(Player):
 
     def __init__(self):
         pass
@@ -33,6 +33,7 @@ class MusicalChairs(Player):
         self.state = StateEncoding(color)
         self.color = color
         self.time = 600
+        self.last_captured_square = None
         if color == chess.WHITE:
             self.board.set_fen("8/8/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
         else:
@@ -50,6 +51,7 @@ class MusicalChairs(Player):
         assert isinstance(self.board, chess.Board)
         if captured_piece:
             captured_piece = self.board.remove_piece_at(captured_square).piece_type
+            self.last_captured_square = captured_square
         self.board.turn = self.color
         self.state.update_state_after_opponent_move(captured_piece, captured_square)
         pass
@@ -74,7 +76,7 @@ class MusicalChairs(Player):
                 possible_sense.remove(sense)
             else:
                 i += 1
-        return random.choice(possible_sense)
+        return self.state.choose_sense(possible_sense, self.last_captured_square)
 
     def handle_sense_result(self, sense_result):
         """
@@ -429,14 +431,16 @@ class StateEncoding:
             if piece is not None:
                 piece = piece.piece_type
                 self.dists[move.from_square] = [0, 0, 0, 0, 0, 0, 0]
-                move_vector = [self.color, 0, 0, 0, 0, 0, 0]
+                self.dists[move.to_square] = [self.color, 0, 0, 0, 0, 0, 0]
                 if piece == chess.PAWN \
                         and (chess.square_rank(move.to_square) == chess.BB_RANK_8
                              or chess.square_rank(move.to_square) == chess.BB_RANK_1):
                     piece = chess.QUEEN if move.promotion is None else move.promotion
                     self.material_differential += self.piece_values[piece]
-                move_vector[piece] = 1
-                self.dists[move.to_square] = move_vector
+                # move_vector[piece] = 1
+                # self.dists[move.to_square] = move_vector
+
+                self.dists[move.to_square][piece] = 1
                 if captured_piece:
                     captured_piece = self.board.remove_piece_at(captured_square)
                     if captured_piece is None:
@@ -448,7 +452,7 @@ class StateEncoding:
     def drift(self):
         initial_vector = [not self.color, 0, 0, 0, 0, 0, 0]
         opp_state = StateEncoding(not self.color)
-        opp_state.import_dist(self.export())
+        opp_state.dists = self.dists[:]
         opp_state.board.turn = opp_state.color
         opp_state.update_board(threshold=0.0)
         # print(opp_state.board.legal_moves)
@@ -456,19 +460,16 @@ class StateEncoding:
             assert isinstance(move, chess.Move)
             reward_diff = opp_state.compute_move_reward_change(move, update=False)
             end_square = move.to_square
-            if not self.is_empty(end_square) and self.dists[end_square][0] == self.color:
-                continue
-            else:
-                self.dists[end_square] = initial_vector
-            # print(reward_diff)
-            prob_delta = (0.5 + (reward_diff/10)) / opp_state.board.legal_moves.count()
-            piece = opp_state.board.piece_at(move.from_square).piece_type
-            self.dists[move.from_square][piece] -= prob_delta
-            if self.dists[move.from_square][piece] < 0:
-                self.dists[move.from_square][piece] = 0
-            self.dists[move.to_square][piece] += prob_delta
-            if self.dists[move.to_square][piece] > 1:
-                self.dists[move.to_square][piece] = 1
+            if not self.is_empty(end_square) and self.dists[end_square][0] != self.color:
+                self.dists[end_square] = initial_vector[:]
+                prob_delta = (0.5 + (reward_diff/10)) / opp_state.board.legal_moves.count()
+                piece = opp_state.board.piece_at(move.from_square).piece_type
+                self.dists[move.from_square][piece] -= prob_delta
+                if self.dists[move.from_square][piece] < 0:
+                    self.dists[move.from_square][piece] = 0
+                self.dists[move.to_square][piece] += prob_delta
+                if self.dists[move.to_square][piece] > 1:
+                    self.dists[move.to_square][piece] = 1
         self.normalize_dist()
 
     def normalize_dist(self):
@@ -494,6 +495,7 @@ class StateEncoding:
                 elif self.dists[square][piece] == float('inf') or self.dists[square][piece] > 1:
                     self.dists[square][piece] = 1
         # print(self.dists)
+        self.update_board()
 
     def update_state_after_opponent_move(self, capture, capture_square):
         # probability drift to uniform as the game progresses and the picture becomes cloudier
@@ -525,12 +527,24 @@ class StateEncoding:
         return state_copy
 
     def import_dist(self, dist):
-        dist_copy = np.copy(dist)
+        dist_copy = dist[:]
         for square in dist_copy:
             square[0] = self.color if square[0] == 1 else not self.color
-        # self.dists = dist_copy
+        self.dists = dist_copy[:]
 
-
+    def choose_sense(self, possible_sense, last_captured_square):
+        if last_captured_square is not None:
+            return last_captured_square
+        chosen = random.choice(possible_sense)
+        total_max_prob = -float('inf')
+        for sense in possible_sense:
+            dist = self.dists[sense]
+            if dist[0] != self.color:
+                max_prob = np.max(dist)
+                if max_prob < 0.8 and max_prob > 0.25 and max_prob > total_max_prob:
+                    total_max_prob = max_prob
+                    chosen = sense
+        return chosen
 
 
 
