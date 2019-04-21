@@ -422,7 +422,7 @@ class StateEncoding:
             return \
                 self.reward_map[piece_moved.piece_type][move.to_square] \
                 - self.reward_map[piece_moved.piece_type][move.from_square] + expected_material_differential
-        
+
     def update_state_with_move(self, move, captured_piece, captured_square):
         if move is not None:
             piece = self.board.piece_at(move.from_square)

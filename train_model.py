@@ -310,6 +310,7 @@ def make_move(state, possible_moves):
         observedBoard = hidden.h
     return best_move
 
+## RUN THESE TO TRAIN NEW NETWORK, IF DESIRED, THEN COMMENT THESE LINES AND RUN TEST.PY
 # create_episodes()
 # train_network(100)
 
