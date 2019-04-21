@@ -277,7 +277,7 @@ def train_network(iterations):
                                                               train_length: num_turns})
             lo_sum += lo
 
-    saver.save(sess, "model/prev_model.ckpt")
+    saver.save(sess, "model/cur_model.ckpt") # CHANGE TO EITHER PREV OR CUR
     # files.download("model/prev_model.ckpt.meta")
     print("Loss: %d" % lo_sum)
 
@@ -291,7 +291,9 @@ def convertLocToSqIdx(senseLoc):
 def make_move(state, possible_moves):
     boardDist = state.export().reshape(1, 64, 7, 1)
     saver = tf.train.Saver()
-    saver.restore(sess, "model/prev_model.ckpt")
+
+    saver.restore(sess, "model/prev_model.ckpt") # CHANGE TO EITHER PREV OR CUR
+
     max_q = -float("inf")
     best_move = None
     observedBoard = np.zeros((1, rnn_size))
@@ -311,6 +313,6 @@ def make_move(state, possible_moves):
     return best_move
 
 ## RUN THESE TO TRAIN NEW NETWORK, IF DESIRED, THEN COMMENT THESE LINES AND RUN TEST.PY
-# create_episodes()
-# train_network(100)
+create_episodes()
+train_network(100)
 

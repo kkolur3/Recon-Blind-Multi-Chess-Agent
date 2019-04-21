@@ -9,6 +9,8 @@ if __name__ == '__main__':
         print("Playing new game")
         winning_color, winning_reason = play_game.play_local_game(my_agent.MusicalChairs(), random_agent.Random(),
                                                                   ["me", "the other guy"])
+        # winning_color, winning_reason = play_game.play_local_game(random_agent.Random(), random_agent.Random(),
+        #                                                           ["me", "the other guy"])
         if winning_color:
             wins += 1
         else:

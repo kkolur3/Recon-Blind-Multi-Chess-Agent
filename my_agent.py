@@ -434,7 +434,7 @@ class StateEncoding:
                         and (chess.square_rank(move.to_square) == chess.BB_RANK_8
                              or chess.square_rank(move.to_square) == chess.BB_RANK_1):
                     piece = chess.QUEEN if move.promotion is None else move.promotion
-                    # self.material_differential += self.piece_values[piece]
+                    self.material_differential += self.piece_values[piece]
                 move_vector[piece] = 1
                 self.dists[move.to_square] = move_vector
                 if captured_piece:
