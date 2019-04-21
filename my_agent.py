@@ -443,7 +443,8 @@ class StateEncoding:
                     chess.square_file(move.to_square) - chess.square_file(move.from_square),
                     0 if move.promotion is None else move.promotion
                 )
-                if abs(move_key[0]) / abs(move_key[1]) == 2 or abs(move_key[1]) / abs(move_key[0]) == 2:
+                if move_key[0] != 0 and move_key[1] != 0 \
+                        and abs(move_key[0])/abs(move_key[1]) == 2 or abs(move_key[1])/abs(move_key[0]) == 2:
                     piece = chess.KNIGHT
                 self.dists[move.to_square][piece] = 1
                 if captured_piece:
