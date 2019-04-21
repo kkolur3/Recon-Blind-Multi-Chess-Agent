@@ -306,9 +306,9 @@ class StateEncoding:
         ]
         if move is None or move == chess.Move.null() or self.board.piece_at(move.from_square) is None:
             return init_vector
-        if (move_key[0] != 0 and move_key[1] != 0 and
-                        abs(move_key[0])/abs(move_key[1]) == 2 or abs(move_key[1])/abs(move_key[0]) == 2)  \
-                or move.promotion is not None and move.promotion != chess.QUEEN and move.promotion != 0:
+        if ((move_key[0] != 0 and move_key[1] != 0) and
+                (abs(move_key[0])/abs(move_key[1]) == 2 or abs(move_key[1])/abs(move_key[0]) == 2))  \
+                or (move.promotion is not None and move.promotion != chess.QUEEN and move.promotion != 0):
             index = 56 + self.special_move_indices[move_key]
         else:
             king_steps = chess.square_distance(move.from_square, move.to_square)
@@ -443,8 +443,8 @@ class StateEncoding:
                     chess.square_file(move.to_square) - chess.square_file(move.from_square),
                     0 if move.promotion is None else move.promotion
                 )
-                if move_key[0] != 0 and move_key[1] != 0 \
-                        and abs(move_key[0])/abs(move_key[1]) == 2 or abs(move_key[1])/abs(move_key[0]) == 2:
+                if (move_key[0] != 0 and move_key[1] != 0) \
+                        and (abs(move_key[0])/abs(move_key[1]) == 2 or abs(move_key[1])/abs(move_key[0]) == 2):
                     piece = chess.KNIGHT
                 self.dists[move.to_square][piece] = 1
                 if captured_piece:
