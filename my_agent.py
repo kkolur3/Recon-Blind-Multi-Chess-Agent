@@ -306,7 +306,8 @@ class StateEncoding:
         ]
         if move is None or move == chess.Move.null() or self.board.piece_at(move.from_square) is None:
             return init_vector
-        if abs(move_key[0])/abs(move_key[1]) == 2 or abs(move_key[1])/abs(move_key[0]) == 2  \
+        if (move_key[0] != 0 and move_key[1] != 0 and
+                        abs(move_key[0])/abs(move_key[1]) == 2 or abs(move_key[1])/abs(move_key[0]) == 2)  \
                 or move.promotion is not None and move.promotion != chess.QUEEN and move.promotion != 0:
             index = 56 + self.special_move_indices[move_key]
         else:
