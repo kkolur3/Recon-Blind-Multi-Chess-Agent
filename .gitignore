@@ -1,3 +1,5 @@
 .idea/
 venv/
 GameHistory/
+.idea/workspace.xml
+episodes.pkl
