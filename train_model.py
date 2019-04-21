@@ -136,8 +136,11 @@ def create_episodes():
         state = StateEncoding(color)
 
         game_history_dir = os.getcwd() + "/GameHistory"
-        with (open("episodes.pkl", "rb")) as f:
-            episodes = pickle.load(f)
+        if os.path.isfile(os.path.join(os.getcwd(), "/episodes.pkl")):
+            with (open("episodes.pkl", "rb")) as f:
+                episodes = pickle.load(f)
+        else:
+            episodes = dict()
         prevBoardDist = init_dist(color)
         action_tensor = np.zeros(shape=(1, 64*82)) # chess.move from uci method that u pass in move string
         hidden_stat = np.zeros((1, rnn_size))
@@ -319,6 +322,8 @@ def make_move(state, possible_moves):
         observedBoard = hidden.h
     return best_move
 # # RUN THESE TO TRAIN NEW NETWORK, IF DESIRED, THEN COMMENT THESE LINES AND RUN TEST.PY
-create_episodes()
-# train_network(100)
+
+if __name__ == '__main__':
+    create_episodes()
+    train_network(100)
 
