@@ -8,7 +8,7 @@ if __name__ == '__main__':
     losses = 0
     for x in range(100):
         print("Playing new game")
-        winning_color, winning_reason = play_game.play_local_game(my_agent.KnightFall(), random_agent.Random(),
+        winning_color, winning_reason = play_game.play_local_game(random_agent.Random(), my_agent.KnightFall(),
                                                                   ["me", "the other guy"])
         # winning_color, winning_reason = play_game.play_local_game(random_agent.Random(), random_agent.Random(),
         #                                                           ["me", "the other guy"])
@@ -21,7 +21,7 @@ if __name__ == '__main__':
 
         print(str.format("Current record, {} - {}", wins, losses))
         print(str.format("Winning percentage: {}%", (1.0 * wins/(wins + losses)) * 100))
-        time.sleep(5)
+        # time.sleep(5)
 
     print(str.format("Final record, {} - {}", wins, losses))
     print(str.format("Winning percentage: {}%", (1.0 * wins / (wins + losses)) * 100))

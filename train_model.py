@@ -292,7 +292,7 @@ def make_move(state, possible_moves):
     boardDist = state.export().reshape(1, 64, 7, 1)
     saver = tf.train.Saver()
 
-    saver.restore(sess, "model/prev_model.ckpt") # CHANGE TO EITHER PREV OR CUR
+    saver.restore(sess, "model/cur_model.ckpt") # CHANGE TO EITHER PREV OR CUR
 
     max_q = -float("inf")
     best_move = None
@@ -311,8 +311,7 @@ def make_move(state, possible_moves):
         beliefBoard = hidden.c
         observedBoard = hidden.h
     return best_move
-
-## RUN THESE TO TRAIN NEW NETWORK, IF DESIRED, THEN COMMENT THESE LINES AND RUN TEST.PY
-create_episodes()
-train_network(100)
+# # RUN THESE TO TRAIN NEW NETWORK, IF DESIRED, THEN COMMENT THESE LINES AND RUN TEST.PY
+# create_episodes()
+# train_network(100)
 
