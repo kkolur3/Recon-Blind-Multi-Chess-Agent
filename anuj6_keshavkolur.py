@@ -76,7 +76,9 @@ class KnightFall(Player):
                 possible_sense.remove(sense)
             else:
                 i += 1
-        return self.state.choose_sense(possible_sense, self.last_captured_square)
+        square = self.state.choose_sense(possible_sense, self.last_captured_square)
+        self.last_captured_square = None
+        return square
 
     def handle_sense_result(self, sense_result):
         """
