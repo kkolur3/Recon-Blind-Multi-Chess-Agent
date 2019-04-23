@@ -68,7 +68,6 @@ action_board_fc2 = tf.add(tf.matmul(concatenate, combined_action_board_weights),
 # Run through RNN
 flattened = tf.contrib.slim.flatten(action_board_fc2)
 convFlat = tf.nn.tanh(tf.reshape(flattened, [1, train_length, rnn_size]))
-# convFlat = tf.nn.tanh(tf.reshape(flattened, [1, train_length, rnn_size]))
 lstm_cell = rnn_cell.BasicLSTMCell(rnn_size)
 outputs, states = tf.nn.dynamic_rnn(lstm_cell, convFlat, dtype="float32",
                                     initial_state=(rnn_cell.LSTMStateTuple(hidden_state, cell_state)))
@@ -126,33 +125,33 @@ idx_to_piece = ["p", "n", "b", "r", "q", "k"]
 
 def create_episodes():
     from my_agent import StateEncoding
+    game_history_dir = os.getcwd() + "/GameHistory"
+    if os.path.isfile(os.path.join(os.getcwd(), "/episodes.pkl")):
+        with (open("episodes.pkl", "rb")) as f:
+            episodes = pickle.load(f)
+    else:
+        episodes = dict()
     for color in [chess.WHITE, chess.BLACK]:
         state = StateEncoding(color)
-
-        game_history_dir = os.getcwd() + "/GameHistory"
-        if os.path.isfile(os.path.join(os.getcwd(), "/episodes.pkl")):
-            with (open("episodes.pkl", "rb")) as f:
-                episodes = pickle.load(f)
-        else:
-            episodes = dict()
-        prevBoardDist = init_dist(color)
-        action_tensor = np.zeros(shape=(1, 64*82)) # chess.move from uci method that u pass in move string
-        hidden_stat = np.zeros((1, rnn_size))
-        cell_stat = np.zeros((1, rnn_size))
-        reward = 0.0
-
-        turn = False
-        senseTurn = False
-        moveTurn = False
-        boardState = ""
-        boardDist = np.zeros(shape=(64, 7))
-        senseLoc = None
         if color == chess.WHITE:
             colorString = "WHITE"
         else:
             colorString = "BLACK"
         next_action = np.zeros(shape=(1, 64*82))
         for filename in os.listdir(game_history_dir):
+            prevBoardDist = init_dist(color)
+            action_tensor = np.zeros(shape=(1, 64 * 82))  # chess.move from uci method that u pass in move string
+            hidden_stat = np.zeros((1, rnn_size))
+            cell_stat = np.zeros((1, rnn_size))
+            reward = 0.0
+
+            turn = False
+            senseTurn = False
+            moveTurn = False
+            boardState = ""
+            boardDist = np.zeros(shape=(64, 7))
+            senseLoc = None
+
             # print(filename)
             lineList = None
             gameOverLine = None
@@ -229,7 +228,7 @@ def create_episodes():
                         episodes[filenamePlayer] = episode
                     else:
                         os.remove(os.path.join(game_history_dir, filename))
-    f = open("episodesCopy.pkl", "wb")
+    f = open("episodes.pkl", "wb")
     pickle.dump(episodes, f)
     f.close()
     # return episodes
@@ -237,7 +236,7 @@ def create_episodes():
 
 def train_network(iterations):
     saver = tf.train.Saver()
-    saver.restore(sess, "model/prev_model.ckpt")
+    saver.restore(sess, "model/cur_model.ckpt")
     with (open("episodes.pkl", "rb")) as f:
         episodes = pickle.load(f)
     print(type(episodes))
@@ -318,6 +317,10 @@ def make_move(state, possible_moves):
 # # RUN THESE TO TRAIN NEW NETWORK, IF DESIRED, THEN COMMENT THESE LINES AND RUN TEST.PY
 
 if __name__ == '__main__':
+    # with (open("episodes.pkl", "rb")) as f:
+    #     episodes = pickle.load(f)
+    # for episode in episodes:
+    #     print(episode)
     create_episodes()
     train_network(100)
 
