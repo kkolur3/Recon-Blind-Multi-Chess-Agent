@@ -117,8 +117,8 @@ class KnightFall(Player):
         assert isinstance(self.board, chess.Board)
         from train_model import make_move
         choice = random.choice(possible_moves)
-        # while not self.board.is_legal(choice):
-        #     choice = random.choice(possible_moves)
+        while not self.board.is_legal(choice):
+            choice = random.choice(possible_moves)
         # choice = make_move(self.state, possible_moves)
         return choice
         

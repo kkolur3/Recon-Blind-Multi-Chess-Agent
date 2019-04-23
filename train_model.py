@@ -236,7 +236,7 @@ def create_episodes():
 
 def train_network(iterations):
     saver = tf.train.Saver()
-    saver.restore(sess, "model/cur_model.ckpt")
+    # saver.restore(sess, "model/cur_model.ckpt")
     with (open("episodes.pkl", "rb")) as f:
         episodes = pickle.load(f)
     print(type(episodes))
@@ -279,10 +279,9 @@ def train_network(iterations):
                                                               q_val: np.array([q_value]),
                                                               train_length: num_turns})
             lo_sum += lo
-
+        print("Training on " + episode + (" LOSS: %d" % lo_sum))
     saver.save(sess, "model/cur_model.ckpt") # CHANGE TO EITHER PREV OR CUR
     # files.download("model/prev_model.ckpt.meta")
-    print("Loss: %d" % lo_sum)
 
 letter_to_row = {"a": 0, "b": 1, "c": 2, "d": 3, "e": 4, "f": 5, "g": 6, "h": 7}
 
