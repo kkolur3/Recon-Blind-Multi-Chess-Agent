@@ -1,4 +1,4 @@
-import my_agent
+import anuj6_keshavkolur
 import random_agent
 import play_game
 import time
@@ -8,7 +8,7 @@ if __name__ == '__main__':
     losses = 0
     for x in range(100):
         print("Playing new game")
-        winning_color, winning_reason = play_game.play_local_game(my_agent.KnightFall(), random_agent.Random(),
+        winning_color, winning_reason = play_game.play_local_game(anuj6_keshavkolur.KnightFall(), random_agent.Random(),
                                                                   ["me", "the other guy"])
         # winning_color, winning_reason = play_game.play_local_game(random_agent.Random(), random_agent.Random(),
         #                                                           ["me", "the other guy"])

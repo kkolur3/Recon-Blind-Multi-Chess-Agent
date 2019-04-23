@@ -125,7 +125,7 @@ idx_to_piece = ["p", "n", "b", "r", "q", "k"]
 
 
 def create_episodes():
-    from my_agent import StateEncoding
+    from anuj6_keshavkolur import StateEncoding
     for color in [chess.WHITE, chess.BLACK]:
         state = StateEncoding(color)
 
@@ -229,7 +229,7 @@ def create_episodes():
                         episodes[filenamePlayer] = episode
                     else:
                         os.remove(os.path.join(game_history_dir, filename))
-    f = open("episodesCopy.pkl", "wb")
+    f = open("episodes.pkl", "wb")
     pickle.dump(episodes, f)
     f.close()
     # return episodes
@@ -237,7 +237,7 @@ def create_episodes():
 
 def train_network(iterations):
     saver = tf.train.Saver()
-    saver.restore(sess, "model/prev_model.ckpt")
+    # saver.restore(sess, "model/cur_model.ckpt")
     with (open("episodes.pkl", "rb")) as f:
         episodes = pickle.load(f)
     print(type(episodes))
@@ -281,7 +281,7 @@ def train_network(iterations):
                                                               train_length: num_turns})
             lo_sum += lo
 
-    saver.save(sess, "model/cur_model.ckpt") # CHANGE TO EITHER PREV OR CUR
+    saver.save(sess, "cur_model.ckpt") # CHANGE TO EITHER PREV OR CUR
     # files.download("model/prev_model.ckpt.meta")
     print("Loss: %d" % lo_sum)
 
@@ -296,7 +296,7 @@ def make_move(state, possible_moves):
     boardDist = state.export().reshape(1, 64, 7, 1)
     saver = tf.train.Saver()
 
-    saver.restore(sess, "model/cur_model.ckpt") # CHANGE TO EITHER PREV OR CUR
+    saver.restore(sess, "prev_model.ckpt") # CHANGE TO EITHER PREV OR CUR
 
     max_q = -float("inf")
     best_move = None
