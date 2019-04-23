@@ -1,76 +1,134 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cff2ff52-ae98-444d-bfda-af3c69cff5ca" name="Default Changelist" comment="Fix index issues with handling state after move">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/my_agent.py" afterPath="$PROJECT_DIR$/my_agent.py" />
+    <list default="true" id="88ced7b9-e853-4956-852b-11f27c863226" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/Recon-Blind-Multi-Chess-Agent.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Recon-Blind-Multi-Chess-Agent.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-03-18_23-31-33-502636game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-03-18_23-31-33-502636true_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_15-46-23-617263game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_15-46-23-617263true_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_15-56-48-908194game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_15-56-48-908194true_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_16-29-34-357919game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_16-29-34-357919true_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_16-29-47-707153game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_16-29-47-707153true_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_17-12-41-617253game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_17-12-41-617253true_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_17-12-54-626253game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_17-12-54-626253true_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_17-13-18-854850game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_17-13-18-854850true_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_17-13-26-374885game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_17-13-26-374885true_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_17-33-54-800740game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_17-33-54-800740true_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_17-36-01-919838game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_17-36-01-919838true_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_17-47-51-802532game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_17-47-51-802532true_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_17-50-13-177712game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_17-50-13-177712true_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_17-50-30-284179game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_17-50-30-284179true_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_17-51-05-318535game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_17-51-05-318535true_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_17-54-48-984638game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_17-54-48-984638true_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_17-58-49-682324game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_18-00-38-842697game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_18-00-38-842697true_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_18-01-06-810882game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_18-01-06-810882true_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_18-01-32-644650game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_18-01-32-644650true_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_18-06-36-172762game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_18-06-36-172762true_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_18-07-21-407893game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_18-07-21-407893true_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_18-07-48-264560game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_18-08-12-922505game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_18-09-21-818648game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_18-09-21-818648true_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_18-11-33-647647game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_18-11-33-647647true_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_18-13-31-030895game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_18-13-31-030895true_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_18-15-44-539493game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_18-15-44-539493true_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_18-16-43-481392game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_18-16-43-481392true_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_18-22-50-212756game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_18-22-50-212756true_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_18-28-52-495304game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_18-28-52-495304true_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_18-34-15-556727game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_18-34-15-556727true_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_18-42-12-862186game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_18-44-17-096149game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_18-44-17-096149true_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_18-47-32-593850game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_18-48-18-444211game_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameHistory/2019-04-08_18-48-18-444211true_boards.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/cur_model.ckpt.data-00000-of-00001" beforeDir="false" afterPath="$PROJECT_DIR$/model/cur_model.ckpt.data-00000-of-00001" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/cur_model.ckpt.index" beforeDir="false" afterPath="$PROJECT_DIR$/model/cur_model.ckpt.index" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/cur_model.ckpt.meta" beforeDir="false" afterPath="$PROJECT_DIR$/model/cur_model.ckpt.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my_agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_agent.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/train_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/train_model.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
-    <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FUSProjectUsageTrigger">
-    <session id="-1226293722">
+    <session id="2133873923">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.open.time.1" value="1" />
-          <entry key="project.opened" value="1" />
+          <entry key="project.closed" value="2" />
+          <entry key="project.open.time.2" value="2" />
+          <entry key="project.open.time.3" value="1" />
+          <entry key="project.opened" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="6" />
-          <entry key="txt" value="9" />
+          <entry key="gitignore" value="4" />
+          <entry key="py" value="11" />
+          <entry key="txt" value="36" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="PLAIN_TEXT" value="9" />
-          <entry key="Python" value="6" />
+          <entry key="PLAIN_TEXT" value="40" />
+          <entry key="Python" value="11" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="1777" />
+          <entry key="gitignore" value="34" />
+          <entry key="py" value="1231" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="1777" />
+          <entry key="PLAIN_TEXT" value="34" />
+          <entry key="Python" value="1231" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
-      <file leaf-file-name="my_agent.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/my_agent.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="125">
-              <caret line="306" column="102" lean-forward="true" selection-start-line="306" selection-start-column="102" selection-end-line="306" selection-end-column="102" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="game.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/game.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1225">
-              <caret line="50" column="19" lean-forward="false" selection-start-line="50" selection-start-column="8" selection-end-line="50" selection-end-column="19" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="train_model.py" pinned="false" current-in-tab="false">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/train_model.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="932">
-              <caret line="324" column="4" lean-forward="false" selection-start-line="324" selection-start-column="4" selection-end-line="324" selection-end-column="4" />
+            <state relative-caret-position="1834">
+              <caret line="239" column="16" selection-start-line="239" selection-start-column="16" selection-end-line="239" selection-end-column="16" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
               </folding>
@@ -78,41 +136,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="human_agent.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/human_agent.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="random_agent.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/random_agent.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="575">
-              <caret line="25" column="0" lean-forward="false" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="play_game.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/play_game.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2000">
-              <caret line="86" column="0" lean-forward="false" selection-start-line="86" selection-start-column="0" selection-end-line="86" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test.py" pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="400">
-              <caret line="16" column="25" lean-forward="true" selection-start-line="16" selection-start-column="25" selection-end-line="16" selection-end-column="25" />
+            <state relative-caret-position="600">
+              <caret line="40" column="35" selection-start-line="40" selection-start-column="35" selection-end-line="40" selection-end-column="35" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -120,31 +148,69 @@
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/my_agent.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="119">
+              <caret line="103" column="11" selection-start-line="103" selection-start-column="11" selection-end-line="103" selection-end-column="11" />
+              <folding>
+                <element signature="e#304#317#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/play_game.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="825">
+              <caret line="61" selection-start-line="61" selection-end-line="61" />
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
-  </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Python Script" />
-      </list>
-    </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>state</find>
-      <find>\\</find>
-      <find>73</find>
-      <find>7f8r</find>
-      <find>g3</find>
-      <find>timeout</find>
-      <find>seconds_left</find>
-      <find>handle_move</find>
-      <find>get_seconds</find>
-      <find>np.</find>
-      <find>color</find>
+      <find>episodes</find>
+      <find>discount</find>
+      <find>replay</find>
+      <find>replay`</find>
+      <find>conv2</find>
+      <find>conv3</find>
+      <find>reshaped</find>
+      <find>concatenate</find>
+      <find>action_board_fc2</find>
+      <find>outputs</find>
+      <find>softmax</find>
+      <find>action_bias</find>
+      <find>print</find>
+      <find>softmac</find>
+      <find>forward_pass</find>
+      <find>discount_fact</find>
+      <find>alpha</find>
+      <find>self.color</find>
+      <find>current</find>
+      <find>play</find>
+      <find>cur</find>
+      <find>pl</find>
+      <find>played new game as bl</find>
+      <find>played new game as</find>
+      <find>current total</find>
+      <find>current total record</find>
+      <find>curre</find>
     </findStrings>
     <replaceStrings>
-      <replace>/</replace>
+      <replace>c2</replace>
+      <replace>input_pass</replace>
+      <replace>c3</replace>
+      <replace>batch_reshaped</replace>
+      <replace>totalLoss</replace>
+      <replace>action_layer</replace>
+      <replace>board_action</replace>
+      <replace>board_action_output</replace>
+      <replace>run_input</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -153,36 +219,23 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/random_agent.py" />
-        <option value="$PROJECT_DIR$/game.py" />
-        <option value="$PROJECT_DIR$/play_game.py" />
-        <option value="$PROJECT_DIR$/test.py" />
         <option value="$PROJECT_DIR$/train_model.py" />
         <option value="$PROJECT_DIR$/my_agent.py" />
+        <option value="$PROJECT_DIR$/test.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="950" />
-    <option name="width" value="980" />
-    <option name="height" value="1030" />
+  <component name="ProjectFrameBounds" fullScreen="true">
+    <option name="width" value="1680" />
+    <option name="height" value="1050" />
   </component>
   <component name="ProjectView">
-    <navigator currentView="ProjectPane" proportions="" version="1">
-      <flattenPackages />
-      <showMembers />
-      <showModules />
-      <showLibraryContents />
-      <hideEmptyPackages />
-      <abbreviatePackageNames />
-      <autoscrollToSource />
-      <autoscrollFromSource />
-      <sortByType />
-      <manualOrder />
+    <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -194,7 +247,7 @@
             <path>
               <item name="Recon-Blind-Multi-Chess-Agent" type="b2602c69:ProjectViewProjectNode" />
               <item name="Recon-Blind-Multi-Chess-Agent" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
+              <item name="GameHistory" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -204,119 +257,6 @@
   </component>
   <component name="PropertiesComponent">
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/train_model.py" />
-  </component>
-  <component name="RestoreUpdateTree" date="Moments ago" ActionInfo="_Update">
-    <UpdatedFiles>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Updated from server" />
-        <option name="myStatusName" value="Changed on server" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="CHANGED_ON_SERVER" />
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Updated" />
-          <option name="myStatusName" value="Changed" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="UPDATED" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/my_agent.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/test.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/train_model.py</PATH>
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Created" />
-          <option name="myStatusName" value="Created" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="CREATED" />
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Deleted" />
-          <option name="myStatusName" value="Deleted" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="true" />
-          <option name="myId" value="REMOVED_FROM_REPOSITORY" />
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Restored" />
-          <option name="myStatusName" value="Will be restored" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="RESTORED" />
-        </FILE-GROUP>
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Modified" />
-        <option name="myStatusName" value="Modified" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MODIFIED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Skipped" />
-        <option name="myStatusName" value="Skipped" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="SKIPPED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged with conflicts" />
-        <option name="myStatusName" value="Will be merged with conflicts" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED_WITH_CONFLICTS" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged with tree conflicts" />
-        <option name="myStatusName" value="Merged with tree conflicts" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED_WITH_TREE_CONFLICT" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged with property conflicts" />
-        <option name="myStatusName" value="Will be merged with property conflicts" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED_WITH_PROPERTY_CONFLICT" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged" />
-        <option name="myStatusName" value="Will be merged" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Not in repository" />
-        <option name="myStatusName" value="Not in repository" />
-        <option name="mySupportsDeletion" value="true" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="UNKNOWN" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Locally added" />
-        <option name="myStatusName" value="Locally added" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="LOCALLY_ADDED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Locally removed" />
-        <option name="myStatusName" value="Locally removed" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="LOCALLY_REMOVED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Switched" />
-        <option name="myStatusName" value="Switched" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="SWITCHED" />
-      </FILE-GROUP>
-    </UpdatedFiles>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -331,41 +271,8 @@
     </option>
   </component>
   <component name="RunManager" selected="Python.test">
-    <configuration name="my_agent" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="Recon-Blind-Multi-Chess-Agent" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/my_agent.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-    </configuration>
-    <configuration name="play_game" type="PythonConfigurationType" factoryName="Python">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="Recon-Blind-Multi-Chess-Agent" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/play_game.py" />
-      <option name="PARAMETERS" value="my_agent.py random_agent.py" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-    </configuration>
     <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Recon-Blind-Multi-Chess-Agent" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -376,535 +283,316 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="Recon-Blind-Multi-Chess-Agent" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
     </configuration>
-    <configuration name="train_model" type="PythonConfigurationType" factoryName="Python">
+    <configuration name="train_model" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Recon-Blind-Multi-Chess-Agent" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="C:\Users\Anuj\AppData\Local\Programs\Python\Python35\python.exe" />
+      <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="Recon-Blind-Multi-Chess-Agent" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/train_model.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
     </configuration>
-    <list size="4">
-      <item index="0" class="java.lang.String" itemvalue="Python.play_game" />
-      <item index="1" class="java.lang.String" itemvalue="Python.train_model" />
-      <item index="2" class="java.lang.String" itemvalue="Python.my_agent" />
-      <item index="3" class="java.lang.String" itemvalue="Python.test" />
+    <list>
+      <item itemvalue="Python.train_model" />
+      <item itemvalue="Python.test" />
     </list>
     <recent_temporary>
-      <list size="2">
-        <item index="0" class="java.lang.String" itemvalue="Python.test" />
-        <item index="1" class="java.lang.String" itemvalue="Python.my_agent" />
+      <list>
+        <item itemvalue="Python.test" />
+        <item itemvalue="Python.train_model" />
       </list>
     </recent_temporary>
-  </component>
-  <component name="ShelveChangesManager" show_recycled="false">
-    <option name="remove_strategy" value="false" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="cff2ff52-ae98-444d-bfda-af3c69cff5ca" name="Default Changelist" comment="" />
-      <created>1554751808187</created>
+      <changelist id="88ced7b9-e853-4956-852b-11f27c863226" name="Default Changelist" comment="" />
+      <created>1555879124494</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1554751808187</updated>
+      <updated>1555879124494</updated>
     </task>
-    <task id="LOCAL-00001" summary="Added handling for player captures.">
-      <created>1555527553326</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1555527553326</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Implemented move encoding and agent handling for promotions.  Also added a name for the agent">
-      <created>1555606170903</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1555606170903</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Added functionality to import probability distribution from NN">
-      <created>1555606709854</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1555606709854</updated>
-    </task>
-    <task id="LOCAL-00004" summary="Implemented move encoding and agent handling for promotions.">
-      <created>1555606961297</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1555606961297</updated>
-    </task>
-    <task id="LOCAL-00005" summary="Flattened move encoding vector to 1D">
-      <created>1555607672461</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1555607672461</updated>
-    </task>
-    <task id="LOCAL-00006" summary="Fix division by 0">
-      <created>1555613346209</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1555613346209</updated>
-    </task>
-    <task id="LOCAL-00007" summary="Attempt to fix issue with null pieces.">
-      <created>1555619774097</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1555619774097</updated>
-    </task>
-    <task id="LOCAL-00008" summary="Attempted fix promotion errors">
-      <created>1555620633256</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1555620633256</updated>
-    </task>
-    <task id="LOCAL-00009" summary="Fix index issues with handling state after move">
-      <created>1555621697611</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1555621697611</updated>
-    </task>
-    <task id="LOCAL-00010" summary="Found potential issue with handling black piece underpromotions.">
-      <created>1555621925607</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1555621925607</updated>
-    </task>
-    <task id="LOCAL-00011" summary="Updated model training script to reflect some changes to the one hot move vector">
-      <created>1555623157705</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1555623157705</updated>
-    </task>
-    <task id="LOCAL-00012" summary="Fix index issues with handling state after move">
-      <created>1555623845351</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1555623845351</updated>
-    </task>
-    <task id="LOCAL-00013" summary="Fix reward issues">
-      <created>1555772933649</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1555772933649</updated>
-    </task>
-    <task id="LOCAL-00014" summary="Initialized state encoding before each game.">
-      <created>1555775584165</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1555775584165</updated>
-    </task>
-    <task id="LOCAL-00015" summary="Fixed capture issues">
-      <created>1555783890196</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1555783890196</updated>
-    </task>
-    <task id="LOCAL-00016" summary="Added automated test script for agent and revised reward change methodology to account for &quot;expected material differential&quot;">
-      <created>1555795307285</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1555795307285</updated>
-    </task>
-    <task id="LOCAL-00017" summary="Code cleanup">
-      <created>1555802619747</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1555802619747</updated>
-    </task>
-    <task id="LOCAL-00018" summary="Added sensing algorithm based on probability distribution and captured squares.">
-      <created>1555811107266</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1555811107267</updated>
-    </task>
-    <task id="LOCAL-00019" summary="Potential fix for knight weirdness">
-      <created>1555862806329</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1555862806329</updated>
-    </task>
-    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
-  <component name="TodoView" selected-index="4">
-    <todo-panel id="selected-file">
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-    <todo-panel id="all">
-      <are-packages-shown value="true" />
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-  </component>
   <component name="ToolWindowManager">
-    <frame x="-11" y="-11" width="1942" height="1042" extended-state="6" />
-    <editor active="true" />
+    <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32990867" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28995433" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="1.0" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.238698" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32959184" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.41836736" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.32959184" />
+      <window_info anchor="bottom" id="Terminal" order="8" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="Python Console" order="10" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="Added handling for player captures." />
-    <MESSAGE value="Implemented move encoding and agent handling for promotions.  Also added a name for the agent" />
-    <MESSAGE value="Added functionality to import probability distribution from NN" />
-    <MESSAGE value="Implemented move encoding and agent handling for promotions." />
-    <MESSAGE value="Flattened move encoding vector to 1D" />
-    <MESSAGE value="Fix division by 0" />
-    <MESSAGE value="Attempt to fix issue with null pieces." />
-    <MESSAGE value="Attempted fix promotion errors" />
-    <MESSAGE value="Found potential issue with handling black piece underpromotions." />
-    <MESSAGE value="Updated model training script to reflect some changes to the one hot move vector" />
-    <MESSAGE value="Fix index issues with handling state after move" />
-    <MESSAGE value="Fix reward issues" />
-    <MESSAGE value="Initialized state encoding before each game." />
-    <MESSAGE value="Fixed capture issues" />
-    <MESSAGE value="Added automated test script for agent and revised reward change methodology to account for &quot;expected material differential&quot;" />
-    <MESSAGE value="Code cleanup" />
-    <MESSAGE value="Added sensing algorithm based on probability distribution and captured squares." />
-    <MESSAGE value="Potential fix for knight weirdness" />
-    <option name="LAST_COMMIT_MESSAGE" value="Potential fix for knight weirdness" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/human_agent.py</url>
-          <line>41</line>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-      </breakpoints>
-      <option name="time" value="46" />
-    </breakpoint-manager>
-    <watches-manager>
-      <configuration name="PythonConfigurationType">
-        <watch expression="move.promotion" language="Python" />
-        <watch expression="self.dists[chess.G5]" language="Python" />
-        <watch expression="move.to_square" language="Python" />
-        <watch expression="move.to_square == chess.G5" language="Python" />
-      </configuration>
-    </watches-manager>
-  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/my_agent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/game.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1250">
-          <caret line="50" column="19" lean-forward="false" selection-start-line="50" selection-start-column="8" selection-end-line="50" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/train_model.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7900">
-          <caret line="316" column="0" lean-forward="true" selection-start-line="316" selection-start-column="0" selection-end-line="316" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/human_agent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/random_agent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="575">
-          <caret line="25" column="0" lean-forward="false" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/play_game.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2000">
-          <caret line="86" column="0" lean-forward="false" selection-start-line="86" selection-start-column="0" selection-end-line="86" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="19" column="34" lean-forward="true" selection-start-line="19" selection-start-column="34" selection-end-line="19" selection-end-column="34" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/my_agent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="550">
-          <caret line="22" column="8" lean-forward="true" selection-start-line="22" selection-start-column="8" selection-end-line="22" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/game.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="625">
-          <caret line="25" column="20" lean-forward="false" selection-start-line="25" selection-start-column="20" selection-end-line="25" selection-end-column="64" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-08_16-29-47-707153true_boards.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2250">
-          <caret line="90" column="11" lean-forward="true" selection-start-line="90" selection-start-column="11" selection-end-line="90" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-08_16-29-47-707153game_boards.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2375">
-          <caret line="95" column="19" lean-forward="true" selection-start-line="95" selection-start-column="19" selection-end-line="95" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/human_agent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/random_agent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="575">
-          <caret line="25" column="19" lean-forward="false" selection-start-line="25" selection-start-column="19" selection-end-line="25" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/play_game.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2425">
-          <caret line="103" column="64" lean-forward="false" selection-start-line="103" selection-start-column="64" selection-end-line="103" selection-end-column="64" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/venv/lib/python3.6/site-packages/chess/__init__.py" />
-    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-08_15-56-48-908194true_boards.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-913">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-08_15-56-48-908194game_boards.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3703">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/GameHistory/2019-03-18_23-31-33-502636true_boards.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-12556">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-08_15-46-23-617263true_boards.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="494">
-          <caret line="72" column="55" lean-forward="true" selection-start-line="72" selection-start-column="55" selection-end-line="72" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/venv/lib/python3.6/site-packages/chess/__init__.py" />
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python35/Lib/site-packages/tensorflow/python/client/session.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="475">
-          <caret line="1127" column="58" lean-forward="true" selection-start-line="1127" selection-start-column="58" selection-end-line="1127" selection-end-column="58" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python35/Lib/site-packages/chess/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="592">
-          <caret line="511" column="0" lean-forward="false" selection-start-line="511" selection-start-column="0" selection-end-line="511" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-08_17-12-41-617253game_boards.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="222">
-          <caret line="10014" column="52" lean-forward="false" selection-start-line="10014" selection-start-column="52" selection-end-line="10014" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python35/Lib/site-packages/tensorflow/python/ops/variable_scope.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="142">
-          <caret line="847" column="0" lean-forward="false" selection-start-line="847" selection-start-column="0" selection-end-line="847" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-08_16-29-47-707153true_boards.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2525">
-          <caret line="101" column="28" lean-forward="false" selection-start-line="101" selection-start-column="27" selection-end-line="101" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/GameHistory/2019-03-18_23-31-33-502636game_boards.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-25073">
-          <caret line="2094" column="76" lean-forward="true" selection-start-line="2094" selection-start-column="76" selection-end-line="2094" selection-end-column="76" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-08_15-46-23-617263game_boards.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1125">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-08_16-29-47-707153game_boards.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="95" column="19" lean-forward="false" selection-start-line="95" selection-start-column="19" selection-end-line="95" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/human_agent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/game.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1225">
-          <caret line="50" column="19" lean-forward="false" selection-start-line="50" selection-start-column="8" selection-end-line="50" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/play_game.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2000">
-          <caret line="86" column="0" lean-forward="false" selection-start-line="86" selection-start-column="0" selection-end-line="86" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/random_agent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="575">
-          <caret line="25" column="0" lean-forward="false" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/gitignore">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="60">
+          <caret line="4" column="12" selection-start-line="4" selection-start-column="12" selection-end-line="4" selection-end-column="12" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test.py">
+    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-21_05-08-16-868795true_boards.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-21_05-08-16-868795game_boards.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="16" column="25" lean-forward="true" selection-start-line="16" selection-start-column="25" selection-end-line="16" selection-end-column="25" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="-25813" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-20_22-12-50-363228game_boards.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1489">
+          <caret line="445" column="1" lean-forward="true" selection-start-line="445" selection-start-column="1" selection-end-line="445" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/random_agent.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="433">
+          <caret line="78" column="11" selection-start-line="78" selection-start-column="11" selection-end-line="78" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-22_17-09-23-473708game_boards.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-22_17-11-28-417934game_boards.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-22_17-11-55-274330game_boards.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-22_17-14-59-577460game_boards.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-22_17-15-54-104218game_boards.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-22_17-16-07-375742game_boards.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-64375" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-22_17-16-08-019098game_boards.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4792" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-22_17-17-14-095812game_boards.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-32455">
+          <caret line="10858" column="58" lean-forward="true" selection-start-line="10858" selection-start-column="58" selection-end-line="10858" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-22_17-17-22-877307game_boards.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-95425" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-22_17-17-23-939770game_boards.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-120400" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-22_17-17-25-514081game_boards.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-119050" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-22_17-17-26-722829game_boards.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-165625" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-22_17-17-29-471450game_boards.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-107575" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-22_17-17-31-550505game_boards.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-276325" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-22_17-17-34-825016game_boards.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-67750" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-22_17-17-36-856914game_boards.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-52225" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-22_17-17-35-813822game_boards.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-92050" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/human_agent.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-22_17-19-07-805763game_boards.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-37390">
+          <caret line="8414" selection-start-line="8414" selection-end-line="8414" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-22_17-19-14-659239game_boards.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-110275" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-22_17-19-22-135101game_boards.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="365">
+          <caret line="6791" column="34" lean-forward="true" selection-start-line="6791" selection-start-column="34" selection-end-line="6791" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-22_17-19-20-763361game_boards.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-100825" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-22_17-19-20-107116game_boards.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-40750" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-22_17-19-19-481343game_boards.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-56275" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-22_17-19-19-151446game_boards.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-31300" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-22_17-19-18-236368game_boards.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-83950" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-22_17-19-17-507587game_boards.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-58975" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-22_17-19-16-561758game_boards.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-73150" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-22_17-21-00-907215game_boards.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-22_17-26-50-768710game_boards.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1240" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/venv/lib/python3.6/site-packages/tensorflow/contrib/distributions/python/ops/mvn_full_covariance.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="20" selection-start-line="20" selection-end-line="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-22_17-26-19-422711game_boards.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4785" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-22_17-43-33-104182game_boards.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="383">
+          <caret line="341" column="34" lean-forward="true" selection-start-line="341" selection-start-column="34" selection-end-line="341" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/play_game.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="825">
+          <caret line="61" selection-start-line="61" selection-end-line="61" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/train_model.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="932">
-          <caret line="324" column="4" lean-forward="false" selection-start-line="324" selection-start-column="4" selection-end-line="324" selection-end-column="4" />
+        <state relative-caret-position="1834">
+          <caret line="239" column="16" selection-start-line="239" selection-start-column="16" selection-end-line="239" selection-end-column="16" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="600">
+          <caret line="40" column="35" selection-start-line="40" selection-start-column="35" selection-end-line="40" selection-end-column="35" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameHistory/2019-04-22_23-41-17-141141game_boards.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/my_agent.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="125">
-          <caret line="306" column="102" lean-forward="true" selection-start-line="306" selection-start-column="102" selection-end-line="306" selection-end-column="102" />
-          <folding />
+        <state relative-caret-position="119">
+          <caret line="103" column="11" selection-start-line="103" selection-start-column="11" selection-end-line="103" selection-end-column="11" />
+          <folding>
+            <element signature="e#304#317#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
