@@ -1,4 +1,4 @@
-import my_agent
+import anuj6_keshavkolur
 import random_agent
 import play_game
 import time
@@ -13,6 +13,12 @@ if __name__ == '__main__':
     totalWins = 0
     totalLosses = 0
     for x in range(100):
+        print("Playing new game")
+        # winning_color, winning_reason = play_game.play_local_game(anuj6_keshavkolur.KnightFall(), random_agent.Random(),
+        #                                                           ["me", "the other guy"])
+        # winning_color, winning_reason = play_game.play_local_game(random_agent.Random(), random_agent.Random(),
+        #                                                           ["me", "the other guy"])
+
 
         # if random.random() >= 0.5:
         #     agentColor = chess.WHITE
@@ -23,7 +29,7 @@ if __name__ == '__main__':
         #     winning_color, winning_reason = play_game.play_local_game(random_agent.Random(), my_agent.KnightFall(),
         #                                                               ["the other guy", "me"])
 
-        winning_color, winning_reason = play_game.play_local_game(my_agent.KnightFall(), my_agent.KnightFall(),
+        winning_color, winning_reason = play_game.play_local_game(anuj6_keshavkolur.KnightFall(), anuj6_keshavkolur.KnightFall(),
                                                                   ["me", "the other guy"])
         if winning_color == chess.WHITE:
             winasWhite += 1

@@ -124,13 +124,13 @@ idx_to_piece = ["p", "n", "b", "r", "q", "k"]
 
 
 def create_episodes():
-    from my_agent import StateEncoding
     game_history_dir = os.getcwd() + "/GameHistory"
     if os.path.isfile(os.path.join(os.getcwd(), "/episodes.pkl")):
         with (open("episodes.pkl", "rb")) as f:
             episodes = pickle.load(f)
     else:
         episodes = dict()
+    from anuj6_keshavkolur import StateEncoding
     for color in [chess.WHITE, chess.BLACK]:
         state = StateEncoding(color)
         if color == chess.WHITE:
@@ -236,7 +236,7 @@ def create_episodes():
 
 def train_network(iterations):
     saver = tf.train.Saver()
-    # saver.restore(sess, "model/cur_model.ckpt")
+    # saver.restore(sess, "cur_model.ckpt")
     with (open("episodes.pkl", "rb")) as f:
         episodes = pickle.load(f)
     print(type(episodes))
@@ -280,7 +280,7 @@ def train_network(iterations):
                                                               train_length: num_turns})
             lo_sum += lo
         print("Training on " + episode + (" LOSS: %d" % lo_sum))
-    saver.save(sess, "model/cur_model.ckpt") # CHANGE TO EITHER PREV OR CUR
+    saver.save(sess, "cur_model.ckpt") # CHANGE TO EITHER PREV OR CUR
     # files.download("model/prev_model.ckpt.meta")
 
 letter_to_row = {"a": 0, "b": 1, "c": 2, "d": 3, "e": 4, "f": 5, "g": 6, "h": 7}
@@ -294,7 +294,7 @@ def make_move(state, possible_moves):
     boardDist = state.export().reshape(1, 64, 7, 1)
     saver = tf.train.Saver()
 
-    saver.restore(sess, "model/cur_model.ckpt") # CHANGE TO EITHER PREV OR CUR
+    saver.restore(sess, "prev_model.ckpt") # CHANGE TO EITHER PREV OR CUR
 
     max_q = -float("inf")
     best_move = None
